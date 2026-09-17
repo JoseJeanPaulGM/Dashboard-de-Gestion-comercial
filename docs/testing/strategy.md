@@ -25,6 +25,10 @@
 
 La suite MVC de V2 cubre carga de contexto, `GET /api/v1/system/info`, preservación/generación de correlation ID, validación de `POST /api/v1/system/echo`, Problem Details, health de Actuator, OpenAPI JSON y Swagger UI. Se ejecuta con `.\\mvnw.cmd test` desde `backend/`.
 
+## Evidencia de V3
+
+V3 ejecuta la suite contra `postgres:17-alpine` mediante Testcontainers y una conexión dinámica de Spring Boot. Las pruebas cubren conexión PostgreSQL 17, persistencia JPA, ID generado, instante UTC, restricción `NOT NULL`, commit, rollback y toda la regresión MVC de V2. La ejecución verificada contiene 9 pruebas, sin fallos, errores ni pruebas omitidas.
+
 ## Escenarios críticos acumulativos
 
 - Compra confirmada incrementa stock una sola vez.
@@ -38,7 +42,7 @@ La suite MVC de V2 cubre carga de contexto, `GET /api/v1/system/info`, preservac
 
 ## Datos y aislamiento
 
-Las pruebas crearán sus propios datos y no dependerán del orden de ejecución. Las integraciones PostgreSQL usarán una base descartable o esquema aislado. No se copiarán datos de producción.
+Las pruebas crearán sus propios datos y no dependerán del orden de ejecución. Desde V3, las integraciones PostgreSQL usan una base descartable de Testcontainers. No se copiarán datos de producción ni se usará la base local de desarrollo.
 
 ## Cobertura
 

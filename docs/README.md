@@ -10,6 +10,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Visión de arquitectura](architecture/overview.md)
 - [Límites modulares](architecture/module-boundaries.md)
 - [Modelo conceptual](database/conceptual-model.md)
+- [Persistencia inicial V3](database/persistence-v3.md)
 - [Convenciones de API](api/conventions.md)
 - [Backend base V2](api/backend-base.md)
 - [Matriz de roles](security/role-matrix.md)
@@ -18,6 +19,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Ciclo de fases](operations/phase-workflow.md)
 - [Revisión de V1](operations/v1-review.md)
 - [Revisión de V2](operations/v2-review.md)
+- [Revisión de V3](operations/v3-review.md)
 
 ## Directorios por disciplina
 

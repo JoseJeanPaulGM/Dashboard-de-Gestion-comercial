@@ -3,6 +3,10 @@ spring:
     name: gestion-comercial-api
   profiles:
     default: local
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
 
 server:
   port: 8080

@@ -14,6 +14,6 @@
 | Costos o límites de servicios cloud | Media | Media | revisar planes al iniciar V17/V18 | cuota, suspensión o función de pago |
 | Documentación desactualizada | Alta | Media | incluirla en Definition of Done | contexto contradice código o migraciones |
 | Restore nunca probado | Media | Alta | restore drill obligatorio en V18 | existen backups sin evidencia de restauración |
+| Docker no disponible para pruebas de persistencia | Media | Media | preflight, imagen PostgreSQL fijada y error explícito | Testcontainers no puede acceder al daemon |
 
 El registro se revisará al planificar y cerrar cada fase. Los riesgos resueltos se conservan con su resultado para mantener trazabilidad.
-

@@ -14,14 +14,15 @@
 ## Estado de continuidad
 
 - Fase activa: ninguna.
-- Último trabajo realizado: cierre aprobado de V2, con backend base Spring Boot, perfiles, OpenAPI, health check, Problem Details, correlation ID y pruebas MVC.
+- Último trabajo realizado: cierre aprobado de V3, con PostgreSQL 17, Spring Data JPA, Hibernate, configuración por ambientes y pruebas Testcontainers de persistencia y transacciones.
+- Estado de V3: cerrada y aprobada el 2026-09-17; versión de cierre `v3`; 9 pruebas en verde.
 - Estado de V2: cerrada y aprobada el 2026-09-17; versión de cierre `v2`.
 - Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
-- Código funcional existente: backend Spring Boot de V2; sin persistencia ni funcionalidad comercial.
+- Código funcional existente: backend Spring Boot con infraestructura JPA/PostgreSQL; sin entidades ni funcionalidad comercial.
 - Migraciones existentes: ninguna.
-- Pruebas automatizadas existentes: pruebas MVC de V2 para información, validación, correlation ID, health y OpenAPI/Swagger.
+- Pruebas automatizadas existentes: 4 pruebas MVC de V2 y 5 pruebas V3 contra PostgreSQL 17 para conexión, JPA, restricciones, commit y rollback.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: esperar aprobación explícita para planificar e iniciar V3. No comenzar V3 todavía.
+- Próximo paso: esperar aprobación explícita para planificar e iniciar V4. No comenzar V4 todavía.
 
 ## Decisiones vigentes
 
@@ -72,6 +73,8 @@ Desde `backend/`:
 .\mvnw.cmd verify
 ```
 
+Las pruebas V3 requieren Docker Desktop operativo y usan `postgres:17-alpine` mediante Testcontainers. En el entorno del agente deben ejecutarse fuera del sandbox para acceder al named pipe de Docker.
+
 Para inspeccionar Git en este entorno:
 
 ```powershell
@@ -87,6 +90,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Límites modulares: `docs/architecture/module-boundaries.md`.
 - Roadmap: `docs/roadmap.md`.
 - Modelo conceptual: `docs/database/conceptual-model.md`.
+- Persistencia V3: `docs/database/persistence-v3.md`.
 - Seguridad: `docs/security/role-matrix.md`.
 - API: `docs/api/conventions.md`.
 - Pruebas: `docs/testing/strategy.md`.
@@ -94,6 +98,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Ciclo por fase: `docs/operations/phase-workflow.md`.
 - Evidencia de revisión V1: `docs/operations/v1-review.md`.
 - Evidencia de revisión V2: `docs/operations/v2-review.md`.
+- Evidencia de revisión V3: `docs/operations/v3-review.md`.
 - Riesgos: `docs/risks.md`.
 
 ## Regla de actualización
