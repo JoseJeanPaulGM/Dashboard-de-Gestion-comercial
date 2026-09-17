@@ -1,0 +1,40 @@
+# Operating systems and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+secrets/
+
+# Java / Maven
+backend/target/
+*.class
+
+# Angular / Node.js
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+npm-debug.log*
+
+# Logs, reports, and temporary files
+*.log
+logs/
+reports/
+tmp/
+*.tmp
+
+# Local database and backup artifacts
+*.dump
+*.backup
+*.sql.gz
+backups/local/
+
