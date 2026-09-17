@@ -5,7 +5,7 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 | Fase | Entrega principal | Hito de aprendizaje | Estado |
 |---:|---|---|---|
 | V1 | arquitectura, documentación y gobierno | decisiones, Git y continuidad | Cerrada (2026-09-17) |
-| V2 | backend HTTP mínimo | Spring Boot, DTO y errores | Pendiente |
+| V2 | backend HTTP mínimo | Spring Boot, DTO y errores | Cerrada (2026-09-17) |
 | V3 | persistencia inicial | PostgreSQL, JPA y transacciones | Pendiente |
 | V4 | clientes | primer vertical slice y Flyway | Pendiente |
 | V5 | productos y categorías | relaciones, dinero y paginación | Pendiente |

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: gestion-comercial-api
+  profiles:
+    default: local
+
+server:
+  port: 8080
+  shutdown: graceful
+  error:
+    include-message: never
+    include-stacktrace: never
+
+application:
+  name: Gestión Comercial API
+  version: 0.1.0-SNAPSHOT
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs

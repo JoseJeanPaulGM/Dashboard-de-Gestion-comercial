@@ -21,6 +21,10 @@
 | smoke | salud del artefacto o despliegue | V17/V18 |
 | operación | rollback, backup/restore e incidentes | V18 |
 
+## Evidencia de V2
+
+La suite MVC de V2 cubre carga de contexto, `GET /api/v1/system/info`, preservación/generación de correlation ID, validación de `POST /api/v1/system/echo`, Problem Details, health de Actuator, OpenAPI JSON y Swagger UI. Se ejecuta con `.\\mvnw.cmd test` desde `backend/`.
+
 ## Escenarios críticos acumulativos
 
 - Compra confirmada incrementa stock una sola vez.
@@ -43,4 +47,3 @@ JaCoCo comienza en V4 como medición. En V17 el gate inicial será 70% de línea
 ## Evidencia de fase
 
 El cierre registrará comandos ejecutados, resultado, pruebas omitidas con motivo y cualquier requisito manual pendiente. Una prueba inestable se trata como defecto, no se ignora silenciosamente.
-

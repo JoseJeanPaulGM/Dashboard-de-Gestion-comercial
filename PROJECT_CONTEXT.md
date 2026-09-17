@@ -14,13 +14,14 @@
 ## Estado de continuidad
 
 - Fase activa: ninguna.
-- Último trabajo realizado: cierre aprobado de V1, incluyendo corrección del roadmap para V17 y V18.
+- Último trabajo realizado: cierre aprobado de V2, con backend base Spring Boot, perfiles, OpenAPI, health check, Problem Details, correlation ID y pruebas MVC.
+- Estado de V2: cerrada y aprobada el 2026-09-17; versión de cierre `v2`.
 - Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
-- Código funcional existente: ninguno.
+- Código funcional existente: backend Spring Boot de V2; sin persistencia ni funcionalidad comercial.
 - Migraciones existentes: ninguna.
-- Pruebas automatizadas existentes: ninguna; en V1 solo corresponden verificaciones documentales.
+- Pruebas automatizadas existentes: pruebas MVC de V2 para información, validación, correlation ID, health y OpenAPI/Swagger.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: esperar aprobación explícita para planificar e iniciar V2. No comenzar V2 todavía.
+- Próximo paso: esperar aprobación explícita para planificar e iniciar V3. No comenzar V3 todavía.
 
 ## Decisiones vigentes
 
@@ -62,9 +63,16 @@ Los motivos están registrados en `docs/architecture/decisions/`.
 - Registros comerciales referenciados: desactivación lógica, no borrado arbitrario.
 - Logs: correlation ID y exclusión de tokens, contraseñas y secretos.
 
-## Comandos de V1
+## Comandos verificados
 
-No existen comandos de build o ejecución porque aún no hay código. Para inspeccionar Git en este entorno se puede usar:
+Desde `backend/`:
+
+```powershell
+.\mvnw.cmd test
+.\mvnw.cmd verify
+```
+
+Para inspeccionar Git en este entorno:
 
 ```powershell
 git -c safe.directory='D:/portfolio 2026' status --short --branch
@@ -75,6 +83,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 ## Documentos esenciales
 
 - Arquitectura: `docs/architecture/overview.md`.
+- API backend V2: `docs/api/backend-base.md`.
 - Límites modulares: `docs/architecture/module-boundaries.md`.
 - Roadmap: `docs/roadmap.md`.
 - Modelo conceptual: `docs/database/conceptual-model.md`.
@@ -84,6 +93,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Git: `docs/devops/git-workflow.md`.
 - Ciclo por fase: `docs/operations/phase-workflow.md`.
 - Evidencia de revisión V1: `docs/operations/v1-review.md`.
+- Evidencia de revisión V2: `docs/operations/v2-review.md`.
 - Riesgos: `docs/risks.md`.
 
 ## Regla de actualización

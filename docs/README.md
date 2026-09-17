@@ -11,11 +11,13 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Límites modulares](architecture/module-boundaries.md)
 - [Modelo conceptual](database/conceptual-model.md)
 - [Convenciones de API](api/conventions.md)
+- [Backend base V2](api/backend-base.md)
 - [Matriz de roles](security/role-matrix.md)
 - [Estrategia de pruebas](testing/strategy.md)
 - [Flujo Git](devops/git-workflow.md)
 - [Ciclo de fases](operations/phase-workflow.md)
 - [Revisión de V1](operations/v1-review.md)
+- [Revisión de V2](operations/v2-review.md)
 
 ## Directorios por disciplina
 
