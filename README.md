@@ -4,12 +4,12 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Fase activa: **V1 — Preparación y arquitectura**.
-- Estado: implementación documental completada; pendiente de revisión y aprobación.
+- Última fase cerrada: **V1 — Preparación y arquitectura** (2026-09-17).
+- Estado: documentación, revisión y aprobación completadas.
 - Código funcional: ninguno.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente fase posible: V2, únicamente después del cierre explícito de V1.
+- Siguiente fase: V2 permanece pendiente y no está autorizada para iniciar.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
 
@@ -58,4 +58,3 @@ No se inicia una fase nueva automáticamente. Las reglas completas están en [do
 - Contabilidad completa, pagos y logística.
 - Despliegue simultáneo en AWS, Azure y GCP.
 - Alta disponibilidad multirregión o Kubernetes durante V1–V18.
-

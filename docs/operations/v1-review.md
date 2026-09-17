@@ -21,7 +21,7 @@
 | Sin código funcional | Cumplido | solo Markdown y `.gitignore` |
 | Enlaces documentales | Cumplido | verificación local sin enlaces rotos |
 | Ausencia de secretos evidentes | Cumplido | escaneo por patrones sin hallazgos |
-| Revisión y aprobación del usuario | Pendiente | necesaria antes del commit/tag y de V2 |
+| Revisión y aprobación del usuario | Cumplido | aprobación explícita recibida el 2026-09-17 |
 
 ## Decisiones que deben conservarse
 
@@ -32,12 +32,8 @@
 - Autorización interna independiente de OIDC.
 - No avanzar automáticamente entre fases.
 
-## Cierre propuesto
+## Cierre registrado
 
-Después de resolver observaciones y recibir aprobación explícita:
+V1 fue aprobada y cerrada el 2026-09-17. El alcance entregado es exclusivamente documental: arquitectura, decisiones, roadmap, convenciones, matrices y plantillas operativas. No se creó código funcional ni se inició V2.
 
-1. actualizar el estado de V1 a cerrada;
-2. crear el commit documental de V1;
-3. crear el tag anotado `v1` si la identidad Git está configurada;
-4. detenerse con V2 como siguiente fase pendiente.
-
+La siguiente fase continúa pendiente de autorización explícita.

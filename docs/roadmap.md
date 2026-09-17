@@ -4,7 +4,7 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 
 | Fase | Entrega principal | Hito de aprendizaje | Estado |
 |---:|---|---|---|
-| V1 | arquitectura, documentación y gobierno | decisiones, Git y continuidad | En revisión |
+| V1 | arquitectura, documentación y gobierno | decisiones, Git y continuidad | Cerrada (2026-09-17) |
 | V2 | backend HTTP mínimo | Spring Boot, DTO y errores | Pendiente |
 | V3 | persistencia inicial | PostgreSQL, JPA y transacciones | Pendiente |
 | V4 | clientes | primer vertical slice y Flyway | Pendiente |
@@ -20,8 +20,8 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 | V14 | reportes | optimización, filtros y CSV | Pendiente |
 | V15 | auditoría | trazabilidad y logs estructurados | Pendiente |
 | V16 | OAuth 2.0/OIDC genérico | federación y vinculación | Pendiente |
-| V17 | Google/Microsoft, Docker y CI | builds reproducibles y calidad | Pendiente |
-| V18 | Render y operación | deploy, monitorización y recuperación | Pendiente |
+| V17 | Google/Microsoft, Docker, GitHub Actions y CI/CD | builds reproducibles, publicación de imágenes y calidad | Pendiente |
+| V18 | Render, autodeploy condicionado a checks exitosos, monitoreo, backups y operación | deploy, recuperación y operación verificable | Pendiente |
 
 ## Reglas del roadmap
 
@@ -34,4 +34,3 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 ## Criterio de producto final
 
 Al cerrar V18 deberá existir una aplicación desplegada con flujo compra–inventario–venta, autorización interna, frontend integrado, reportes, auditoría, autenticación externa, CI/CD, monitoreo y procedimientos de recuperación verificables.
-

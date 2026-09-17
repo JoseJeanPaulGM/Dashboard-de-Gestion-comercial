@@ -13,14 +13,14 @@
 
 ## Estado de continuidad
 
-- Fase activa: V1 — Preparación y arquitectura.
-- Último trabajo realizado: estructura documental, decisiones, roadmap, convenciones, matrices y plantillas de operación.
-- Estado de V1: implementada documentalmente; pendiente de revisión, aprobación, commit y tag.
+- Fase activa: ninguna.
+- Último trabajo realizado: cierre aprobado de V1, incluyendo corrección del roadmap para V17 y V18.
+- Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
 - Código funcional existente: ninguno.
 - Migraciones existentes: ninguna.
 - Pruebas automatizadas existentes: ninguna; en V1 solo corresponden verificaciones documentales.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: revisar V1 con el usuario, corregir observaciones y cerrarla. No comenzar V2 todavía.
+- Próximo paso: esperar aprobación explícita para planificar e iniciar V2. No comenzar V2 todavía.
 
 ## Decisiones vigentes
 
