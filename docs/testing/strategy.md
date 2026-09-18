@@ -35,6 +35,12 @@ V4 reemplaza el probe artificial de persistencia por pruebas sobre el esquema Fl
 
 La verificación del 2026-09-18 ejecutó 27 pruebas contra PostgreSQL 17: 0 fallos, 0 errores y 0 omitidas. JaCoCo midió 95.04% de líneas y 90% de ramas para el backend completo; estos valores son informativos y no constituyen un gate antes de V17.
 
+## Evidencia de V5
+
+V5 añade pruebas de dominio, API y persistencia para Category y Product. Cubren normalización, precios PEN, relación obligatoria, ciclos de estado, conflictos, filtros, rangos de precio, búsqueda literal, todos los campos de orden publicados, paginación compartida y carga de categorías con `open-in-view: false`.
+
+La verificación final del 2026-09-18 ejecutó 52 pruebas contra PostgreSQL 17: 0 fallos, 0 errores y 0 omitidas. También verificó dos migraciones Flyway desde un esquema vacío, constraints, FK, checks y toda la regresión V2–V4. JaCoCo midió 96.83% de líneas y 82.03% de ramas para el backend completo; continúa siendo informativo y sin gate hasta V17.
+
 ## Escenarios críticos acumulativos
 
 - Compra confirmada incrementa stock una sola vez.

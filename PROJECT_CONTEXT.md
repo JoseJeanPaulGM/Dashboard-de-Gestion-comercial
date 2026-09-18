@@ -14,17 +14,18 @@
 ## Estado de continuidad
 
 - Fase activa: ninguna.
-- Último trabajo realizado: cierre aprobado de V4, con módulo Customer, migración Flyway inicial, API CRUD sin borrado físico, listado paginado con filtros y medición JaCoCo.
+- Último trabajo realizado: cierre aprobado de V5, con módulo Catalog, categorías, productos, relación obligatoria, precios PEN, ciclo activo/inactivo y paginación reutilizada de V4.
+- Estado de V5: cerrada y aprobada el 2026-09-18; versión de cierre `v5`; 52 pruebas en verde.
 - Estado de V4: cerrada y aprobada el 2026-09-18; versión de cierre `v4`; 27 pruebas en verde.
 - Estado de V3: cerrada y aprobada el 2026-09-17; versión de cierre `v3`; 9 pruebas en verde.
 - Estado de V2: cerrada y aprobada el 2026-09-17; versión de cierre `v2`.
 - Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
-- Código funcional existente: backend Spring Boot con módulo Customer, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
-- Migraciones existentes: `V1__create_customers.sql`, aplicada por Flyway desde una base vacía.
-- Pruebas automatizadas existentes: 27 pruebas en verde; cubren Customer, paginación, Flyway, PostgreSQL 17, restricciones, transacciones y regresión V2/V3.
-- Cobertura informativa V4: 95.04% de líneas y 90% de ramas; sin gate hasta V17.
+- Código funcional existente: backend Spring Boot con módulos Customer y Catalog, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
+- Migraciones existentes: `V1__create_customers.sql` y `V2__create_catalog.sql`, aplicadas por Flyway desde una base vacía.
+- Pruebas automatizadas existentes: 52 pruebas en verde; cubren Customer, Catalog, paginación, Flyway, PostgreSQL 17, relaciones, importes, restricciones, transacciones y regresión V2–V4.
+- Cobertura informativa V5: 96.83% de líneas y 82.03% de ramas; sin gate hasta V17.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: esperar aprobación explícita para planificar e iniciar V5. No comenzar V5 todavía.
+- Próximo paso: esperar aprobación explícita para preparar V6. No iniciar V6 todavía.
 
 ## Decisiones vigentes
 
@@ -97,6 +98,8 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Modelo conceptual: `docs/database/conceptual-model.md`.
 - Persistencia V3: `docs/database/persistence-v3.md`.
 - Esquema Customer V4: `docs/database/customers-v4.md`.
+- API Catalog V5: `docs/api/catalog-v5.md`.
+- Esquema Catalog V5: `docs/database/catalog-v5.md`.
 - Seguridad: `docs/security/role-matrix.md`.
 - API: `docs/api/conventions.md`.
 - Pruebas: `docs/testing/strategy.md`.
@@ -106,6 +109,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Evidencia de revisión V2: `docs/operations/v2-review.md`.
 - Evidencia de revisión V3: `docs/operations/v3-review.md`.
 - Evidencia de revisión V4: `docs/operations/v4-review.md`.
+- Evidencia de revisión V5: `docs/operations/v5-review.md`.
 - Riesgos: `docs/risks.md`.
 
 ## Regla de actualización

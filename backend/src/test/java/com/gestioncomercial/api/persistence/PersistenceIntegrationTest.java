@@ -40,7 +40,7 @@ class PersistenceIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE products, categories, customers RESTART IDENTITY");
     }
 
     @Test
@@ -53,14 +53,17 @@ class PersistenceIntegrationTest {
     }
 
     @Test
-    void appliesTheFlywayBaselineAndCreatesCustomersTable() {
-        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("1");
+    void appliesAllFlywayMigrationsAndCreatesTheExpectedTables() {
+        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("2");
 
         Integer tableCount = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'customers'",
+                """
+                SELECT COUNT(*) FROM information_schema.tables
+                WHERE table_schema = 'public' AND table_name IN ('customers', 'categories', 'products')
+                """,
                 Integer.class
         );
-        assertThat(tableCount).isEqualTo(1);
+        assertThat(tableCount).isEqualTo(3);
     }
 
     @Test
@@ -84,6 +87,21 @@ class PersistenceIntegrationTest {
         assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM customers", Long.class)).isZero();
     }
 
+    @Test
+    void enforcesCatalogUniquenessRelationshipAndPositivePrice() {
+        long categoryId = insertCategory("OFFICE", "Office");
+        insertProduct("PEN-01", "Pen", "2.50", categoryId);
+
+        assertThatThrownBy(() -> insertCategory("OFFICE", "Duplicate"))
+                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> insertProduct("PEN-01", "Duplicate", "3.00", categoryId))
+                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> insertProduct("PEN-02", "Invalid category", "3.00", 999))
+                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> insertProduct("PEN-03", "Invalid price", "0.00", categoryId))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
     private void insertCustomer(String type, String number, String name) {
         OffsetDateTime now = OffsetDateTime.ofInstant(
                 Instant.parse("2026-09-18T12:00:00Z"),
@@ -98,6 +116,37 @@ class PersistenceIntegrationTest {
                 type,
                 number,
                 name,
+                now,
+                now
+        );
+    }
+
+    private long insertCategory(String code, String name) {
+        OffsetDateTime now = OffsetDateTime.ofInstant(Instant.parse("2026-09-18T12:00:00Z"), ZoneOffset.UTC);
+        return jdbcTemplate.queryForObject(
+                """
+                INSERT INTO categories (code, name, active, created_at, updated_at)
+                VALUES (?, ?, TRUE, ?, ?) RETURNING id
+                """,
+                Long.class,
+                code,
+                name,
+                now,
+                now
+        );
+    }
+
+    private void insertProduct(String sku, String name, String price, long categoryId) {
+        OffsetDateTime now = OffsetDateTime.ofInstant(Instant.parse("2026-09-18T12:00:00Z"), ZoneOffset.UTC);
+        jdbcTemplate.update(
+                """
+                INSERT INTO products (sku, name, sale_price, category_id, active, created_at, updated_at)
+                VALUES (?, ?, CAST(? AS NUMERIC), ?, TRUE, ?, ?)
+                """,
+                sku,
+                name,
+                price,
+                categoryId,
                 now,
                 now
         );

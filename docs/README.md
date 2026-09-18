@@ -12,9 +12,11 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Modelo conceptual](database/conceptual-model.md)
 - [Persistencia inicial V3](database/persistence-v3.md)
 - [Esquema Customer V4](database/customers-v4.md)
+- [Esquema Catalog V5](database/catalog-v5.md)
 - [Convenciones de API](api/conventions.md)
 - [Backend base V2](api/backend-base.md)
 - [API Customer V4](api/customers-v4.md)
+- [API Catalog V5](api/catalog-v5.md)
 - [Matriz de roles](security/role-matrix.md)
 - [Estrategia de pruebas](testing/strategy.md)
 - [Flujo Git](devops/git-workflow.md)
@@ -23,6 +25,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Revisión de V2](operations/v2-review.md)
 - [Revisión de V3](operations/v3-review.md)
 - [Revisión de V4](operations/v4-review.md)
+- [Revisión de V5](operations/v5-review.md)
 
 ## Directorios por disciplina
 

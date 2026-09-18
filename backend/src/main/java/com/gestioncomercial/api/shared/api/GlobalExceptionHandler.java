@@ -1,5 +1,11 @@
 package com.gestioncomercial.api.shared.api;
 
+import com.gestioncomercial.api.catalog.domain.CategoryCodeConflictException;
+import com.gestioncomercial.api.catalog.domain.CategoryHasActiveProductsException;
+import com.gestioncomercial.api.catalog.domain.CategoryNotFoundException;
+import com.gestioncomercial.api.catalog.domain.ProductCategoryInactiveException;
+import com.gestioncomercial.api.catalog.domain.ProductNotFoundException;
+import com.gestioncomercial.api.catalog.domain.ProductSkuConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerDocumentConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerNotFoundException;
 import com.gestioncomercial.api.shared.observability.CorrelationIdFilter;
@@ -124,6 +130,66 @@ public class GlobalExceptionHandler {
                 "Customer document conflict",
                 exception.getMessage(),
                 "CUSTOMER_DOCUMENT_CONFLICT",
+                request
+        );
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    ResponseEntity<ProblemDetail> handleCategoryNotFound(
+            CategoryNotFoundException exception,
+            HttpServletRequest request
+    ) {
+        return response(HttpStatus.NOT_FOUND, "Category not found", exception.getMessage(), "CATEGORY_NOT_FOUND", request);
+    }
+
+    @ExceptionHandler(CategoryCodeConflictException.class)
+    ResponseEntity<ProblemDetail> handleCategoryCodeConflict(
+            CategoryCodeConflictException exception,
+            HttpServletRequest request
+    ) {
+        return response(HttpStatus.CONFLICT, "Category code conflict", exception.getMessage(), "CATEGORY_CODE_CONFLICT", request);
+    }
+
+    @ExceptionHandler(CategoryHasActiveProductsException.class)
+    ResponseEntity<ProblemDetail> handleCategoryHasActiveProducts(
+            CategoryHasActiveProductsException exception,
+            HttpServletRequest request
+    ) {
+        return response(
+                HttpStatus.CONFLICT,
+                "Category has active products",
+                exception.getMessage(),
+                "CATEGORY_HAS_ACTIVE_PRODUCTS",
+                request
+        );
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    ResponseEntity<ProblemDetail> handleProductNotFound(
+            ProductNotFoundException exception,
+            HttpServletRequest request
+    ) {
+        return response(HttpStatus.NOT_FOUND, "Product not found", exception.getMessage(), "PRODUCT_NOT_FOUND", request);
+    }
+
+    @ExceptionHandler(ProductSkuConflictException.class)
+    ResponseEntity<ProblemDetail> handleProductSkuConflict(
+            ProductSkuConflictException exception,
+            HttpServletRequest request
+    ) {
+        return response(HttpStatus.CONFLICT, "Product SKU conflict", exception.getMessage(), "PRODUCT_SKU_CONFLICT", request);
+    }
+
+    @ExceptionHandler(ProductCategoryInactiveException.class)
+    ResponseEntity<ProblemDetail> handleProductCategoryInactive(
+            ProductCategoryInactiveException exception,
+            HttpServletRequest request
+    ) {
+        return response(
+                HttpStatus.CONFLICT,
+                "Product category inactive",
+                exception.getMessage(),
+                "PRODUCT_CATEGORY_INACTIVE",
                 request
         );
     }

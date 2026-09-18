@@ -37,3 +37,5 @@ erDiagram
 ## Evolución controlada
 
 V3 realizó el spike mínimo de persistencia. V4 estableció el baseline de Flyway y cambió Hibernate a validación de esquema. Cada fase posterior añadirá una migración hacia adelante y una estrategia de compatibilidad cuando sea necesaria.
+
+V5 concreta Category y Product como maestros separados. Cada Product pertenece obligatoriamente a una Category y conserva un precio de venta vigente, positivo y expresado en PEN mediante un decimal de escala explícita. Los importes transaccionales futuros seguirán siendo snapshots propios de compras y ventas.

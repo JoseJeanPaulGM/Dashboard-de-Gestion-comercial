@@ -8,7 +8,7 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 | V2 | backend HTTP mínimo | Spring Boot, DTO y errores | Cerrada (2026-09-17) |
 | V3 | persistencia inicial | PostgreSQL, JPA y transacciones | Cerrada (2026-09-17) |
 | V4 | clientes | primer vertical slice, Flyway y base reutilizable de paginación | Cerrada (2026-09-18) |
-| V5 | productos y categorías | relaciones, dinero y ampliación de la paginación de V4 | Pendiente |
+| V5 | productos y categorías | relaciones, dinero y ampliación de la paginación de V4 | Cerrada (2026-09-18) |
 | V6 | proveedores | asociaciones y reglas de ciclo de vida | Pendiente |
 | V7 | compras | agregados y atomicidad | Pendiente |
 | V8 | ventas | stock, locking y concurrencia | Pendiente |
