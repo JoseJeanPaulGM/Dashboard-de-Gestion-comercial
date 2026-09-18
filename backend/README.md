@@ -1,6 +1,6 @@
 # Backend — Gestión Comercial API
 
-Backend de Gestión Comercial con el módulo Customer de V4, API REST paginada y esquema PostgreSQL administrado por Flyway. La seguridad permanece reservada para V10.
+Backend de Gestión Comercial con los módulos Customer y Catalog, API REST paginada y esquema PostgreSQL administrado por Flyway. La seguridad permanece reservada para V10.
 
 ## Tecnologías activas
 
@@ -55,9 +55,21 @@ Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boo
 | `GET /api/v1/customers` | listar, filtrar y buscar clientes con paginación |
 | `PUT /api/v1/customers/{id}` | actualizar cliente |
 | `PATCH /api/v1/customers/{id}/status` | activar o desactivar cliente |
+| `POST /api/v1/categories` | crear categoría |
+| `GET /api/v1/categories/{id}` | consultar categoría |
+| `GET /api/v1/categories` | listar, filtrar y buscar categorías con paginación |
+| `PUT /api/v1/categories/{id}` | actualizar categoría |
+| `PATCH /api/v1/categories/{id}/status` | activar o desactivar categoría |
+| `POST /api/v1/products` | crear producto con precio en PEN |
+| `GET /api/v1/products/{id}` | consultar producto y su categoría |
+| `GET /api/v1/products` | listar, filtrar y buscar productos con paginación |
+| `PUT /api/v1/products/{id}` | actualizar producto |
+| `PATCH /api/v1/products/{id}/status` | activar o desactivar producto |
 
-La especificación de contrato está en `../docs/api/backend-base.md`.
+La especificación base está en [backend-base.md](../docs/api/backend-base.md).
 
-La persistencia de V3 está documentada en `../docs/database/persistence-v3.md`.
+La persistencia de V3 está documentada en [persistence-v3.md](../docs/database/persistence-v3.md).
 
-El contrato Customer y el esquema V4 están documentados en `../docs/api/customers-v4.md` y `../docs/database/customers-v4.md`.
+El contrato Customer y el esquema V4 están documentados en [customers-v4.md](../docs/api/customers-v4.md) y [customers-v4.md](../docs/database/customers-v4.md).
+
+El contrato Catalog y el esquema V5 están documentados en [catalog-v5.md](../docs/api/catalog-v5.md) y [catalog-v5.md](../docs/database/catalog-v5.md).

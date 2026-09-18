@@ -27,7 +27,7 @@ Se usarán 400 para petición mal formada, 401 no autenticado, 403 no autorizado
 - Solo se aceptan campos de orden declarados por el recurso.
 - La respuesta contendrá `content`, página, tamaño, total de elementos y total de páginas.
 
-Desde V4 el contrato concreto es `PageResponse<T>` con `content`, `page`, `size`, `totalElements` y `totalPages`. El tamaño permitido es de 1 a 100 y cada módulo declara sus campos de orden, filtros y búsqueda. V5 reutilizará esta base para productos y categorías.
+Desde V4 el contrato concreto es `PageResponse<T>` con `content`, `page`, `size`, `totalElements` y `totalPages`. El tamaño permitido es de 1 a 100 y cada módulo declara sus campos de orden, filtros y búsqueda. V5 reutilizó esta base para productos y categorías.
 
 ## Errores
 

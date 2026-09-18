@@ -40,7 +40,7 @@
 9. Facturación electrónica queda como evolución posterior a V18.
 10. Ninguna fase comienza sin aprobación explícita de la anterior.
 11. V4 establece `PageResponse<T>` y validación técnica de `page`, `size` y `sort`; cada módulo conserva sus filtros y campos de orden.
-12. V5 reutilizará esta base de paginación para productos y categorías y añadirá sus filtros propios.
+12. V5 reutilizó esta base de paginación para productos y categorías y añadió sus filtros propios.
 
 Los motivos están registrados en `docs/architecture/decisions/`.
 

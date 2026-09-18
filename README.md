@@ -4,12 +4,12 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Última fase cerrada: **V4 — Clientes** (2026-09-18).
+- Última fase cerrada: **V5 — Categorías y productos** (2026-09-18), versión `v5`.
 - Fase activa: ninguna.
-- Código funcional: backend Spring Boot con módulo Customer, API paginada, Flyway, PostgreSQL y pruebas de integración.
+- Código funcional: backend Spring Boot con módulos Customer y Catalog, API paginada, Flyway, PostgreSQL y 52 pruebas automatizadas.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente paso: V5 permanece pendiente y no está autorizada para iniciar.
+- Siguiente paso: V6 permanece pendiente y no está autorizada para iniciar.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
 
@@ -23,7 +23,7 @@ La evolución prevista incluye Java 17, Spring Boot, PostgreSQL, Angular 18, JWT
 
 ```text
 .
-├── backend/                # Reservado para Spring Boot desde V2
+├── backend/                # API Spring Boot activa desde V2
 ├── frontend/               # Reservado para Angular desde V11
 ├── docs/                   # Documentación viva por disciplina
 ├── .github/                # Plantillas y, desde V17, workflows
@@ -37,8 +37,9 @@ La evolución prevista incluye Java 17, Spring Boot, PostgreSQL, Angular 18, JWT
 Cada fase sigue este flujo sin saltos:
 
 ```text
-PLAN → REVISAR → APROBAR → CHAT → IMPLEMENTAR → PROBAR
-     → REVISAR → COMMIT → CERRAR FASE → ESPERAR
+RESUMEN → REVISAR → APROBAR INICIO → IMPLEMENTAR → PROBAR
+        → DOCUMENTAR → REVISAR → APROBAR CIERRE
+        → COMMIT/TAG → CERRAR FASE → ESPERAR
 ```
 
 No se inicia una fase nueva automáticamente. Las reglas completas están en [docs/operations/phase-workflow.md](docs/operations/phase-workflow.md) y el flujo Git en [docs/devops/git-workflow.md](docs/devops/git-workflow.md).

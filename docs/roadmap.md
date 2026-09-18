@@ -31,7 +31,7 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 - No se incorporan herramientas de una fase posterior solo por conveniencia.
 - El detalle de la fase siguiente se revisa al cerrarse la fase actual para incorporar lo aprendido.
 
-V4 establece el contrato paginado transversal y la validación de `page`, `size` y `sort`. V5 deberá reutilizar esa base para productos y categorías, manteniendo en Catalog la propiedad de sus filtros, búsquedas y campos de orden.
+V4 estableció el contrato paginado transversal y la validación de `page`, `size` y `sort`. V5 reutilizó esa base para productos y categorías, manteniendo en Catalog la propiedad de sus filtros, búsquedas y campos de orden.
 
 ## Criterio de producto final
 
