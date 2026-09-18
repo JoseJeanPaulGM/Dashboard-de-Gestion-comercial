@@ -1,7 +1,12 @@
 package com.gestioncomercial.api.shared.api;
 
+import com.gestioncomercial.api.customer.domain.CustomerDocumentConflictException;
+import com.gestioncomercial.api.customer.domain.CustomerNotFoundException;
 import com.gestioncomercial.api.shared.observability.CorrelationIdFilter;
+import com.gestioncomercial.api.shared.pagination.InvalidPaginationException;
+import com.gestioncomercial.api.shared.pagination.InvalidSortException;
 import java.net.URI;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,6 +27,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private final Clock clock;
+
+    public GlobalExceptionHandler(Clock clock) {
+        this.clock = clock;
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ProblemDetail> handleValidation(
@@ -39,6 +51,81 @@ public class GlobalExceptionHandler {
         );
         problemDetail.setProperty("errors", violations);
         return ResponseEntity.badRequest().body(problemDetail);
+    }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
+    ResponseEntity<ProblemDetail> handleInvalidRequest(Exception exception, HttpServletRequest request) {
+        return response(
+                HttpStatus.BAD_REQUEST,
+                "Invalid request",
+                "The request contains a malformed or unsupported value.",
+                "INVALID_REQUEST",
+                request
+        );
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    ResponseEntity<ProblemDetail> handleInvalidRequest(InvalidRequestException exception, HttpServletRequest request) {
+        return response(
+                HttpStatus.BAD_REQUEST,
+                "Invalid request",
+                exception.getMessage(),
+                "INVALID_REQUEST",
+                request
+        );
+    }
+
+    @ExceptionHandler(InvalidPaginationException.class)
+    ResponseEntity<ProblemDetail> handleInvalidPagination(
+            InvalidPaginationException exception,
+            HttpServletRequest request
+    ) {
+        return response(
+                HttpStatus.BAD_REQUEST,
+                "Invalid pagination",
+                exception.getMessage(),
+                "INVALID_PAGINATION",
+                request
+        );
+    }
+
+    @ExceptionHandler(InvalidSortException.class)
+    ResponseEntity<ProblemDetail> handleInvalidSort(InvalidSortException exception, HttpServletRequest request) {
+        return response(
+                HttpStatus.BAD_REQUEST,
+                "Invalid sort",
+                exception.getMessage(),
+                "INVALID_SORT",
+                request
+        );
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    ResponseEntity<ProblemDetail> handleCustomerNotFound(
+            CustomerNotFoundException exception,
+            HttpServletRequest request
+    ) {
+        return response(
+                HttpStatus.NOT_FOUND,
+                "Customer not found",
+                exception.getMessage(),
+                "CUSTOMER_NOT_FOUND",
+                request
+        );
+    }
+
+    @ExceptionHandler(CustomerDocumentConflictException.class)
+    ResponseEntity<ProblemDetail> handleCustomerDocumentConflict(
+            CustomerDocumentConflictException exception,
+            HttpServletRequest request
+    ) {
+        return response(
+                HttpStatus.CONFLICT,
+                "Customer document conflict",
+                exception.getMessage(),
+                "CUSTOMER_DOCUMENT_CONFLICT",
+                request
+        );
     }
 
     @ExceptionHandler(Exception.class)
@@ -68,10 +155,20 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle(title);
         problemDetail.setInstance(URI.create(request.getRequestURI()));
         problemDetail.setProperty("code", code);
-        problemDetail.setProperty("timestamp", Instant.now().toString());
+        problemDetail.setProperty("timestamp", Instant.now(clock).toString());
         problemDetail.setProperty("path", request.getRequestURI());
         problemDetail.setProperty("correlationId", correlationId(request));
         return problemDetail;
+    }
+
+    private ResponseEntity<ProblemDetail> response(
+            HttpStatus status,
+            String title,
+            String detail,
+            String code,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity.status(status).body(problem(status, title, detail, code, request));
     }
 
     private String correlationId(HttpServletRequest request) {

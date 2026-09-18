@@ -1,6 +1,6 @@
 # Backend — Gestión Comercial API
 
-Backend de Gestión Comercial con base HTTP de V2 e infraestructura de persistencia incorporada en V3. No incluye todavía módulos comerciales, migraciones Flyway ni seguridad.
+Backend de Gestión Comercial con el módulo Customer de V4, API REST paginada y esquema PostgreSQL administrado por Flyway. La seguridad permanece reservada para V10.
 
 ## Tecnologías activas
 
@@ -9,7 +9,9 @@ Backend de Gestión Comercial con base HTTP de V2 e infraestructura de persisten
 - Maven Wrapper 3.8.5.
 - Spring Web, Validation, Actuator y springdoc-openapi 2.9.1.
 - Spring Data JPA, Hibernate y driver PostgreSQL.
+- Flyway para migraciones y Hibernate en modo `validate`.
 - PostgreSQL 17 y Testcontainers para pruebas de persistencia.
+- JaCoCo 0.8.13 como medición informativa de cobertura.
 
 ## Requisitos
 
@@ -37,9 +39,9 @@ $env:DB_PASSWORD = "local-only-password"
 .\mvnw.cmd spring-boot:run
 ```
 
-Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boot no carga ese archivo automáticamente. `DB_URL`, `DB_USERNAME` y `DB_PASSWORD` son obligatorios en producción. Hibernate no crea ni modifica el esquema en `local` o `prod`.
+Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boot no carga ese archivo automáticamente. `DB_URL`, `DB_USERNAME` y `DB_PASSWORD` son obligatorios en producción. Flyway aplica las migraciones y Hibernate valida el esquema en todos los perfiles.
 
-## Endpoints V2
+## Endpoints disponibles
 
 | URL | Propósito |
 |---|---|
@@ -48,7 +50,14 @@ Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boo
 | `GET /actuator/health` | health check básico |
 | `GET /v3/api-docs` | documento OpenAPI JSON |
 | `GET /swagger-ui/index.html` | interfaz Swagger local |
+| `POST /api/v1/customers` | crear cliente |
+| `GET /api/v1/customers/{id}` | consultar cliente |
+| `GET /api/v1/customers` | listar, filtrar y buscar clientes con paginación |
+| `PUT /api/v1/customers/{id}` | actualizar cliente |
+| `PATCH /api/v1/customers/{id}/status` | activar o desactivar cliente |
 
 La especificación de contrato está en `../docs/api/backend-base.md`.
 
 La persistencia de V3 está documentada en `../docs/database/persistence-v3.md`.
+
+El contrato Customer y el esquema V4 están documentados en `../docs/api/customers-v4.md` y `../docs/database/customers-v4.md`.

@@ -3,25 +3,25 @@ package com.gestioncomercial.api.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.gestioncomercial.api.support.postgresql.PostgreSqlTestConfiguration;
 import java.sql.Connection;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import javax.sql.DataSource;
-
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-
-import com.gestioncomercial.api.support.postgresql.PostgreSqlTestConfiguration;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Import(PostgreSqlTestConfiguration.class)
 class PersistenceIntegrationTest {
@@ -30,14 +30,17 @@ class PersistenceIntegrationTest {
     private DataSource dataSource;
 
     @Autowired
-    private PersistenceProbeRepository repository;
+    private Flyway flyway;
 
     @Autowired
-    private TransactionProbeService transactionProbeService;
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private PlatformTransactionManager transactionManager;
 
     @BeforeEach
     void cleanDatabase() {
-        repository.deleteAll();
+        jdbcTemplate.execute("TRUNCATE TABLE customers RESTART IDENTITY");
     }
 
     @Test
@@ -50,39 +53,53 @@ class PersistenceIntegrationTest {
     }
 
     @Test
-    void persistsAndReadsAnEntityWithGeneratedLongIdAndUtcInstant() {
-        Instant createdAt = Instant.parse("2026-09-17T08:00:00.123456Z")
-                .truncatedTo(ChronoUnit.MICROS);
+    void appliesTheFlywayBaselineAndCreatesCustomersTable() {
+        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("1");
 
-        PersistenceProbe saved = repository.saveAndFlush(new PersistenceProbe("jpa-probe", createdAt));
-
-        assertThat(saved.getId()).isNotNull().isPositive();
-        assertThat(repository.findById(saved.getId()))
-                .hasValueSatisfying(found -> {
-                    assertThat(found.getValue()).isEqualTo("jpa-probe");
-                    assertThat(found.getCreatedAt()).isEqualTo(createdAt);
-                });
+        Integer tableCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'customers'",
+                Integer.class
+        );
+        assertThat(tableCount).isEqualTo(1);
     }
 
     @Test
-    void enforcesDatabaseNotNullConstraint() {
-        assertThatThrownBy(() -> repository.saveAndFlush(new PersistenceProbe(null, Instant.now())))
+    void enforcesTheCustomerDocumentUniqueConstraint() {
+        insertCustomer("RUC", "20123456789", "First customer");
+
+        assertThatThrownBy(() -> insertCustomer("RUC", "20123456789", "Second customer"))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test
-    void commitsAllWritesFromSuccessfulTransaction() {
-        transactionProbeService.savePair("first", "second");
+    void rollsBackAllWritesWhenATransactionFails() {
+        TransactionTemplate transaction = new TransactionTemplate(transactionManager);
 
-        assertThat(repository.count()).isEqualTo(2);
+        assertThatThrownBy(() -> transaction.executeWithoutResult(status -> {
+            insertCustomer("DNI", "12345678", "First customer");
+            insertCustomer("DNI", "87654321", "Second customer");
+            throw new IllegalStateException("Intentional failure");
+        })).isInstanceOf(IllegalStateException.class);
+
+        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM customers", Long.class)).isZero();
     }
 
-    @Test
-    void rollsBackAllWritesWhenTransactionFails() {
-        assertThatThrownBy(() -> transactionProbeService.savePairAndFail("first", "second"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Intentional failure");
-
-        assertThat(repository.count()).isZero();
+    private void insertCustomer(String type, String number, String name) {
+        OffsetDateTime now = OffsetDateTime.ofInstant(
+                Instant.parse("2026-09-18T12:00:00Z"),
+                ZoneOffset.UTC
+        );
+        jdbcTemplate.update(
+                """
+                INSERT INTO customers (
+                    document_type, document_number, name, active, created_at, updated_at
+                ) VALUES (?, ?, ?, TRUE, ?, ?)
+                """,
+                type,
+                number,
+                name,
+                now,
+                now
+        );
     }
 }

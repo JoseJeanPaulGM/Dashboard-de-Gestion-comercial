@@ -29,6 +29,12 @@ La suite MVC de V2 cubre carga de contexto, `GET /api/v1/system/info`, preservac
 
 V3 ejecuta la suite contra `postgres:17-alpine` mediante Testcontainers y una conexión dinámica de Spring Boot. Las pruebas cubren conexión PostgreSQL 17, persistencia JPA, ID generado, instante UTC, restricción `NOT NULL`, commit, rollback y toda la regresión MVC de V2. La ejecución verificada contiene 9 pruebas, sin fallos, errores ni pruebas omitidas.
 
+## Evidencia de V4
+
+V4 reemplaza el probe artificial de persistencia por pruebas sobre el esquema Flyway y el módulo Customer real. La suite cubre creación, consulta, actualización, estado lógico, conflictos de documento, paginación, orden permitido, filtro `active`, búsqueda literal por nombre o documento, Problem Details, migración desde base vacía, restricciones, commit, rollback y regresión V2/V3.
+
+La verificación del 2026-09-18 ejecutó 27 pruebas contra PostgreSQL 17: 0 fallos, 0 errores y 0 omitidas. JaCoCo midió 95.04% de líneas y 90% de ramas para el backend completo; estos valores son informativos y no constituyen un gate antes de V17.
+
 ## Escenarios críticos acumulativos
 
 - Compra confirmada incrementa stock una sola vez.

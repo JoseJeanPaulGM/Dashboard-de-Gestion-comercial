@@ -4,12 +4,12 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Última fase cerrada: **V3 — Persistencia inicial** (2026-09-17).
+- Última fase cerrada: **V4 — Clientes** (2026-09-18).
 - Fase activa: ninguna.
-- Código funcional: backend Spring Boot con PostgreSQL, JPA, Hibernate y pruebas transaccionales; sin módulos comerciales.
+- Código funcional: backend Spring Boot con módulo Customer, API paginada, Flyway, PostgreSQL y pruebas de integración.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente fase: V4 permanece pendiente y no está autorizada para iniciar.
+- Siguiente paso: V5 permanece pendiente y no está autorizada para iniciar.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
 

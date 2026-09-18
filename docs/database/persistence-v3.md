@@ -40,6 +40,6 @@ La suite verifica contra PostgreSQL 17:
 
 Testcontainers requiere Docker Desktop operativo. La ausencia del daemon produce un fallo explícito al iniciar el contexto; no existe fallback a H2 ni a una base compartida.
 
-## Evolución en V4
+## Evolución realizada en V4
 
-V4 incorporará la primera entidad comercial, establecerá el baseline de Flyway y cambiará Hibernate a validación del esquema gestionado por migraciones. Este documento no autoriza iniciar esas tareas antes del cierre aprobado de V3.
+Tras el cierre aprobado de V3, V4 incorporó Customer, estableció `V1__create_customers.sql` como primera migración Flyway y cambió Hibernate a validación del esquema. El detalle vigente está en `customers-v4.md`.

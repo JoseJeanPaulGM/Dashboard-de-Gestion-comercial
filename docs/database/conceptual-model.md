@@ -36,5 +36,4 @@ erDiagram
 
 ## Evolución controlada
 
-V3 realizará un spike mínimo de persistencia. V4 establecerá el baseline de Flyway y cambiará Hibernate a validación de esquema. Cada fase posterior añadirá una migración hacia adelante y una estrategia de compatibilidad cuando sea necesaria.
-
+V3 realizó el spike mínimo de persistencia. V4 estableció el baseline de Flyway y cambió Hibernate a validación de esquema. Cada fase posterior añadirá una migración hacia adelante y una estrategia de compatibilidad cuando sea necesaria.

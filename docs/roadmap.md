@@ -7,8 +7,8 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 | V1 | arquitectura, documentación y gobierno | decisiones, Git y continuidad | Cerrada (2026-09-17) |
 | V2 | backend HTTP mínimo | Spring Boot, DTO y errores | Cerrada (2026-09-17) |
 | V3 | persistencia inicial | PostgreSQL, JPA y transacciones | Cerrada (2026-09-17) |
-| V4 | clientes | primer vertical slice y Flyway | Pendiente |
-| V5 | productos y categorías | relaciones, dinero y paginación | Pendiente |
+| V4 | clientes | primer vertical slice, Flyway y base reutilizable de paginación | Cerrada (2026-09-18) |
+| V5 | productos y categorías | relaciones, dinero y ampliación de la paginación de V4 | Pendiente |
 | V6 | proveedores | asociaciones y reglas de ciclo de vida | Pendiente |
 | V7 | compras | agregados y atomicidad | Pendiente |
 | V8 | ventas | stock, locking y concurrencia | Pendiente |
@@ -30,6 +30,8 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 - Las tareas no terminadas no se ocultan: se registran y se decide si bloquean el cierre.
 - No se incorporan herramientas de una fase posterior solo por conveniencia.
 - El detalle de la fase siguiente se revisa al cerrarse la fase actual para incorporar lo aprendido.
+
+V4 establece el contrato paginado transversal y la validación de `page`, `size` y `sort`. V5 deberá reutilizar esa base para productos y categorías, manteniendo en Catalog la propiedad de sus filtros, búsquedas y campos de orden.
 
 ## Criterio de producto final
 
