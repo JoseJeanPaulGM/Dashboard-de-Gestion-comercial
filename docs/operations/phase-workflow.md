@@ -3,16 +3,25 @@
 ## Flujo obligatorio
 
 ```text
-PLAN → REVISAR → APROBAR → CHAT → IMPLEMENTAR → PROBAR
-     → REVISAR → COMMIT → CERRAR FASE → ESPERAR
+RESUMEN → REVISAR → APROBAR INICIO → IMPLEMENTAR → PROBAR
+        → DOCUMENTAR → REVISAR → APROBAR CIERRE
+        → COMMIT/TAG → CERRAR FASE → ESPERAR
 ```
 
 ## Entrada a una fase
 
 - Fase anterior cerrada y aprobada.
+- Resumen corto presentado al usuario con alcance, exclusiones, verificación y documentos que se actualizarán.
+- Aprobación explícita del resumen antes de crear ramas, modificar archivos o implementar.
 - Objetivo, alcance, exclusiones y aceptación entendidos.
 - Riesgos y dependencias revisados.
 - Rama o estrategia de cambio acordada.
+
+## Cambios surgidos durante una fase
+
+- Si durante una versión aparece cualquier corrección o mejora, se detiene su aplicación.
+- Se informa al usuario del motivo, alcance, impacto y verificación prevista.
+- La corrección o mejora solo se aplica después de recibir aprobación explícita, aunque parezca necesaria o beneficiosa.
 
 ## Definition of Done
 
@@ -23,7 +32,8 @@ PLAN → REVISAR → APROBAR → CHAT → IMPLEMENTAR → PROBAR
 - Sin secretos, datos reales, warnings críticos ni fallos ocultos.
 - `PROJECT_CONTEXT.md` refleja el estado verificable.
 - Revisión realizada y observaciones resueltas.
-- Commit/tag solo después de aprobación del cierre.
+- Resultado final presentado al usuario después de completar pruebas y documentación.
+- Aprobación explícita del usuario antes del commit, tag y cierre de la versión.
 
 ## Cierre y handoff
 
@@ -38,5 +48,4 @@ Registrar:
 
 ## Regla de parada
 
-Después de cerrar una fase se espera una nueva aprobación. La disponibilidad de tiempo o herramientas no autoriza a avanzar.
-
+Antes de iniciar una fase, ante cualquier corrección o mejora surgida durante ella y antes de cerrarla, se espera la aprobación explícita correspondiente. Después del cierre no se inicia la fase siguiente automáticamente. La disponibilidad de tiempo o herramientas no autoriza a avanzar.

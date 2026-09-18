@@ -9,8 +9,10 @@
 
 ## Regla de fases
 
+- Antes de iniciar cada versión, presentar al usuario un resumen corto de qué se hará, qué quedará fuera, cómo se comprobará y qué documentos se actualizarán; esperar su aprobación explícita antes de crear ramas, modificar archivos o implementar.
 - Trabajar exclusivamente en la fase aprobada por el usuario.
 - No anticipar código, dependencias ni infraestructura de fases futuras.
+- Durante una versión aprobada, si aparece cualquier corrección o mejora, detenerse, explicarla y solicitar aprobación explícita antes de aplicarla, aunque parezca necesaria o beneficiosa.
 - No cerrar, etiquetar ni iniciar otra fase sin revisión y aprobación explícitas.
 - Ante una petición amplia como “continuar”, confirmar el próximo elemento pendiente del contexto y mantener el alcance de la fase activa.
 
@@ -41,8 +43,9 @@
 
 ## Cierre de trabajo
 
+- Completar y documentar las pruebas relevantes y actualizar la documentación afectada antes de solicitar el cierre.
+- Presentar el resultado final al usuario y esperar su aprobación explícita antes de cerrar la versión, crear su etiqueta o iniciar la siguiente.
 - Actualizar `PROJECT_CONTEXT.md`.
 - Registrar decisiones arquitectónicas nuevas como ADR.
 - Documentar comandos ejecutados y resultado de pruebas.
 - Enumerar pendientes reales, sin iniciar automáticamente la siguiente fase.
-
