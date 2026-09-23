@@ -4,6 +4,7 @@ import com.gestioncomercial.api.catalog.domain.CategoryCodeConflictException;
 import com.gestioncomercial.api.catalog.domain.CategoryHasActiveProductsException;
 import com.gestioncomercial.api.catalog.domain.CategoryNotFoundException;
 import com.gestioncomercial.api.catalog.domain.ProductCategoryInactiveException;
+import com.gestioncomercial.api.catalog.domain.ProductHasActiveSuppliersException;
 import com.gestioncomercial.api.catalog.domain.ProductNotFoundException;
 import com.gestioncomercial.api.catalog.domain.ProductSkuConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerDocumentConflictException;
@@ -11,6 +12,12 @@ import com.gestioncomercial.api.customer.domain.CustomerNotFoundException;
 import com.gestioncomercial.api.shared.observability.CorrelationIdFilter;
 import com.gestioncomercial.api.shared.pagination.InvalidPaginationException;
 import com.gestioncomercial.api.shared.pagination.InvalidSortException;
+import com.gestioncomercial.api.supplier.domain.SupplierHasActiveProductsException;
+import com.gestioncomercial.api.supplier.domain.SupplierNotFoundException;
+import com.gestioncomercial.api.supplier.domain.SupplierProductConflictException;
+import com.gestioncomercial.api.supplier.domain.SupplierProductInactivePartyException;
+import com.gestioncomercial.api.supplier.domain.SupplierProductNotFoundException;
+import com.gestioncomercial.api.supplier.domain.SupplierRucConflictException;
 import java.net.URI;
 import java.time.Clock;
 import java.time.Instant;
@@ -192,6 +199,58 @@ public class GlobalExceptionHandler {
                 "PRODUCT_CATEGORY_INACTIVE",
                 request
         );
+    }
+
+    @ExceptionHandler(ProductHasActiveSuppliersException.class)
+    ResponseEntity<ProblemDetail> handleProductHasActiveSuppliers(
+            ProductHasActiveSuppliersException exception,
+            HttpServletRequest request
+    ) {
+        return response(
+                HttpStatus.CONFLICT,
+                "Product has active suppliers",
+                exception.getMessage(),
+                "PRODUCT_HAS_ACTIVE_SUPPLIERS",
+                request
+        );
+    }
+
+    @ExceptionHandler(SupplierNotFoundException.class)
+    ResponseEntity<ProblemDetail> handleSupplierNotFound(SupplierNotFoundException exception, HttpServletRequest request) {
+        return response(HttpStatus.NOT_FOUND, "Supplier not found", exception.getMessage(), "SUPPLIER_NOT_FOUND", request);
+    }
+
+    @ExceptionHandler(SupplierRucConflictException.class)
+    ResponseEntity<ProblemDetail> handleSupplierRucConflict(SupplierRucConflictException exception, HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Supplier RUC conflict", exception.getMessage(), "SUPPLIER_RUC_CONFLICT", request);
+    }
+
+    @ExceptionHandler(SupplierHasActiveProductsException.class)
+    ResponseEntity<ProblemDetail> handleSupplierHasActiveProducts(SupplierHasActiveProductsException exception,
+                                                                  HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Supplier has active products", exception.getMessage(),
+                "SUPPLIER_HAS_ACTIVE_PRODUCTS", request);
+    }
+
+    @ExceptionHandler(SupplierProductNotFoundException.class)
+    ResponseEntity<ProblemDetail> handleSupplierProductNotFound(SupplierProductNotFoundException exception,
+                                                                 HttpServletRequest request) {
+        return response(HttpStatus.NOT_FOUND, "Supplier product link not found", exception.getMessage(),
+                "SUPPLIER_PRODUCT_NOT_FOUND", request);
+    }
+
+    @ExceptionHandler(SupplierProductConflictException.class)
+    ResponseEntity<ProblemDetail> handleSupplierProductConflict(SupplierProductConflictException exception,
+                                                                 HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Supplier product conflict", exception.getMessage(),
+                "SUPPLIER_PRODUCT_CONFLICT", request);
+    }
+
+    @ExceptionHandler(SupplierProductInactivePartyException.class)
+    ResponseEntity<ProblemDetail> handleSupplierProductInactiveParty(SupplierProductInactivePartyException exception,
+                                                                      HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Supplier product party inactive", exception.getMessage(),
+                "SUPPLIER_PRODUCT_INACTIVE_PARTY", request);
     }
 
     @ExceptionHandler(Exception.class)

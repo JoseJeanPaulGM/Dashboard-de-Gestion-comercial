@@ -40,7 +40,7 @@ class PersistenceIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE products, categories, customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
     }
 
     @Test
@@ -54,16 +54,17 @@ class PersistenceIntegrationTest {
 
     @Test
     void appliesAllFlywayMigrationsAndCreatesTheExpectedTables() {
-        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("2");
+        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("3");
 
         Integer tableCount = jdbcTemplate.queryForObject(
                 """
                 SELECT COUNT(*) FROM information_schema.tables
-                WHERE table_schema = 'public' AND table_name IN ('customers', 'categories', 'products')
+                WHERE table_schema = 'public'
+                  AND table_name IN ('customers', 'categories', 'products', 'suppliers', 'supplier_products')
                 """,
                 Integer.class
         );
-        assertThat(tableCount).isEqualTo(3);
+        assertThat(tableCount).isEqualTo(5);
     }
 
     @Test
@@ -99,6 +100,23 @@ class PersistenceIntegrationTest {
         assertThatThrownBy(() -> insertProduct("PEN-02", "Invalid category", "3.00", 999))
                 .isInstanceOf(DataIntegrityViolationException.class);
         assertThatThrownBy(() -> insertProduct("PEN-03", "Invalid price", "0.00", categoryId))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @Test
+    void enforcesSupplierUniquenessRelationshipsAndRucFormat() {
+        long categoryId = insertCategory("OFFICE", "Office");
+        long productId = insertProductReturningId("PEN-01", "Pen", "2.50", categoryId);
+        long supplierId = insertSupplier("20123456789", "Acme");
+        insertSupplierProduct(supplierId, productId);
+
+        assertThatThrownBy(() -> insertSupplier("20123456789", "Duplicate"))
+                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> insertSupplier("ABC", "Invalid"))
+                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> insertSupplierProduct(supplierId, productId))
+                .isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> insertSupplierProduct(supplierId, 999))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
@@ -150,5 +168,32 @@ class PersistenceIntegrationTest {
                 now,
                 now
         );
+    }
+
+    private long insertProductReturningId(String sku, String name, String price, long categoryId) {
+        OffsetDateTime now = OffsetDateTime.ofInstant(Instant.parse("2026-09-18T12:00:00Z"), ZoneOffset.UTC);
+        return jdbcTemplate.queryForObject(
+                """
+                INSERT INTO products (sku, name, sale_price, category_id, active, created_at, updated_at)
+                VALUES (?, ?, CAST(? AS NUMERIC), ?, TRUE, ?, ?) RETURNING id
+                """, Long.class, sku, name, price, categoryId, now, now);
+    }
+
+    private long insertSupplier(String ruc, String name) {
+        OffsetDateTime now = OffsetDateTime.ofInstant(Instant.parse("2026-09-18T12:00:00Z"), ZoneOffset.UTC);
+        return jdbcTemplate.queryForObject(
+                """
+                INSERT INTO suppliers (ruc, business_name, active, created_at, updated_at)
+                VALUES (?, ?, TRUE, ?, ?) RETURNING id
+                """, Long.class, ruc, name, now, now);
+    }
+
+    private void insertSupplierProduct(long supplierId, long productId) {
+        OffsetDateTime now = OffsetDateTime.ofInstant(Instant.parse("2026-09-18T12:00:00Z"), ZoneOffset.UTC);
+        jdbcTemplate.update(
+                """
+                INSERT INTO supplier_products (supplier_id, product_id, active, created_at, updated_at)
+                VALUES (?, ?, TRUE, ?, ?)
+                """, supplierId, productId, now, now);
     }
 }

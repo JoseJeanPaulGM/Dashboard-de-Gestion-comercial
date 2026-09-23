@@ -28,7 +28,7 @@ El listado acepta `page`, `size`, `sort`, `active` y `search`. La búsqueda parc
 | `PUT` | `/api/v1/products/{id}` | `200` con producto actualizado |
 | `PATCH` | `/api/v1/products/{id}/status` | `200` con producto actualizado |
 
-SKU, nombre, `salePrice` y `categoryId` son obligatorios. El SKU se normaliza con trim y mayúsculas y es único. El precio es positivo, acepta como máximo diez enteros y dos decimales y se devuelve junto con `currency: "PEN"`. Cada producto pertenece a una categoría existente. Un producto nuevo o reactivado requiere una categoría activa.
+SKU, nombre, `salePrice` y `categoryId` son obligatorios. El SKU se normaliza con trim y mayúsculas y es único. El precio es positivo, acepta como máximo diez enteros y dos decimales y se devuelve junto con `currency: "PEN"`. Cada producto pertenece a una categoría existente. Un producto nuevo o reactivado requiere una categoría activa. Desde V6, un producto tampoco puede desactivarse mientras tenga vínculos activos con proveedores; después de inactivar esos vínculos puede desactivarse normalmente.
 
 El listado acepta `page`, `size`, `sort`, `active`, `categoryId`, `search`, `minPrice` y `maxPrice`. Los límites de precio son inclusivos y `minPrice` no puede superar `maxPrice`. La búsqueda consulta SKU o nombre con las mismas reglas literales de categorías.
 
@@ -47,6 +47,7 @@ La API conserva Problem Details y los códigos transversales. Catalog añade:
 - `CATEGORY_HAS_ACTIVE_PRODUCTS`;
 - `PRODUCT_NOT_FOUND`;
 - `PRODUCT_SKU_CONFLICT`;
-- `PRODUCT_CATEGORY_INACTIVE`.
+- `PRODUCT_CATEGORY_INACTIVE`;
+- `PRODUCT_HAS_ACTIVE_SUPPLIERS` desde V6.
 
 Las validaciones devuelven `400`, los recursos inexistentes `404` y los conflictos de unicidad o estado `409`.

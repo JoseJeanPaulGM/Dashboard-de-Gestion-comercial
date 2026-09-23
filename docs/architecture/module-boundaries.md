@@ -28,6 +28,7 @@ Cada módulo será propietario de su modelo, casos de uso, contratos y persisten
 3. Audit recibe hechos; no controla el éxito de la operación principal ni almacena secretos.
 4. Identity decide autoridades internas. Los proveedores OIDC solo prueban identidad externa.
 5. Una dependencia circular obliga a revisar límites antes de introducir soluciones técnicas.
+6. Catalog define el puerto que protege la desactivación de Product; Supplier lo implementa con sus vínculos propios. Catalog no consulta repositorios ni entidades internas de Supplier.
 
 ## Estructura futura orientativa
 
@@ -51,4 +52,3 @@ com.example.commercialmanagement
 ```
 
 El nombre base definitivo se confirmará en V2 antes de generar el proyecto; el ejemplo no autoriza crear código durante V1.
-

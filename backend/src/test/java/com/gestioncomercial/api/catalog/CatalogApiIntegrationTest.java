@@ -42,7 +42,7 @@ class CatalogApiIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE products, categories RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE supplier_products, suppliers, products, categories RESTART IDENTITY");
     }
 
     @Test

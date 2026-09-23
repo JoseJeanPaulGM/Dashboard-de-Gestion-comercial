@@ -33,15 +33,18 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductDeactivationGuard deactivationGuard;
     private final Clock clock;
 
     public ProductService(
             ProductRepository productRepository,
             CategoryRepository categoryRepository,
+            ProductDeactivationGuard deactivationGuard,
             Clock clock
     ) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.deactivationGuard = deactivationGuard;
         this.clock = clock;
     }
 
@@ -116,6 +119,9 @@ public class ProductService {
         Product product = get(id);
         if (active && !product.getCategory().isActive()) {
             throw new ProductCategoryInactiveException();
+        }
+        if (!active && product.isActive()) {
+            deactivationGuard.ensureCanDeactivate(id);
         }
         product.changeActive(active, clock);
         return productRepository.save(product);
