@@ -30,4 +30,14 @@ class InventoryBalancePersistenceAdapter implements InventoryBalanceRepository {
                     updated_at = EXCLUDED.updated_at
                 """, productId, quantity, OffsetDateTime.ofInstant(now, ZoneOffset.UTC));
     }
+
+    @Override
+    public boolean decreaseIfAvailable(long productId, long quantity) {
+        Instant now = clock.instant().truncatedTo(ChronoUnit.MICROS);
+        return jdbcTemplate.update("""
+                UPDATE inventory_balances
+                SET quantity = quantity - ?, updated_at = ?
+                WHERE product_id = ? AND quantity >= ?
+                """, quantity, OffsetDateTime.ofInstant(now, ZoneOffset.UTC), productId, quantity) == 1;
+    }
 }

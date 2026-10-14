@@ -9,9 +9,13 @@ import com.gestioncomercial.api.catalog.domain.ProductNotFoundException;
 import com.gestioncomercial.api.catalog.domain.ProductSkuConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerDocumentConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerNotFoundException;
+import com.gestioncomercial.api.inventory.application.InsufficientStockException;
 import com.gestioncomercial.api.purchase.domain.PurchaseNotFoundException;
 import com.gestioncomercial.api.purchase.domain.PurchaseStateConflictException;
 import com.gestioncomercial.api.purchase.domain.PurchaseSupplyUnavailableException;
+import com.gestioncomercial.api.sale.domain.SaleNotFoundException;
+import com.gestioncomercial.api.sale.domain.SalePartyUnavailableException;
+import com.gestioncomercial.api.sale.domain.SaleStateConflictException;
 import com.gestioncomercial.api.shared.observability.CorrelationIdFilter;
 import com.gestioncomercial.api.shared.pagination.InvalidPaginationException;
 import com.gestioncomercial.api.shared.pagination.InvalidSortException;
@@ -275,6 +279,32 @@ public class GlobalExceptionHandler {
                                                                   HttpServletRequest request) {
         return response(HttpStatus.CONFLICT, "Purchase supply unavailable", exception.getMessage(),
                 "PURCHASE_SUPPLY_UNAVAILABLE", request);
+    }
+
+    @ExceptionHandler(SaleNotFoundException.class)
+    ResponseEntity<ProblemDetail> handleSaleNotFound(SaleNotFoundException exception, HttpServletRequest request) {
+        return response(HttpStatus.NOT_FOUND, "Sale not found", exception.getMessage(), "SALE_NOT_FOUND", request);
+    }
+
+    @ExceptionHandler(SaleStateConflictException.class)
+    ResponseEntity<ProblemDetail> handleSaleStateConflict(SaleStateConflictException exception,
+                                                          HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Sale state conflict", exception.getMessage(),
+                "SALE_STATE_CONFLICT", request);
+    }
+
+    @ExceptionHandler(SalePartyUnavailableException.class)
+    ResponseEntity<ProblemDetail> handleSalePartyUnavailable(SalePartyUnavailableException exception,
+                                                              HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Sale party unavailable", exception.getMessage(),
+                "SALE_PARTY_UNAVAILABLE", request);
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    ResponseEntity<ProblemDetail> handleInsufficientStock(InsufficientStockException exception,
+                                                          HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Insufficient stock", exception.getMessage(),
+                "INSUFFICIENT_STOCK", request);
     }
 
     @ExceptionHandler(Exception.class)

@@ -19,4 +19,14 @@ public class InventoryStockService {
         }
         balances.increase(productId, quantity);
     }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void decrease(long productId, long quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("quantity must be positive");
+        }
+        if (!balances.decreaseIfAvailable(productId, quantity)) {
+            throw new InsufficientStockException();
+        }
+    }
 }
