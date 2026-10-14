@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.MigrationVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ class PersistenceIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE sale_lines, sales, inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE inventory_movements, sale_lines, sales, inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
     }
 
     @Test
@@ -54,18 +55,95 @@ class PersistenceIntegrationTest {
 
     @Test
     void appliesAllFlywayMigrationsAndCreatesTheExpectedTables() {
-        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("5");
+        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("6");
 
         Integer tableCount = jdbcTemplate.queryForObject(
                 """
                 SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_schema = 'public'
                   AND table_name IN ('customers', 'categories', 'products', 'suppliers', 'supplier_products',
-                                     'purchases', 'purchase_lines', 'inventory_balances', 'sales', 'sale_lines')
+                                     'purchases', 'purchase_lines', 'inventory_balances', 'sales', 'sale_lines',
+                                     'inventory_movements')
                 """,
                 Integer.class
         );
-        assertThat(tableCount).isEqualTo(10);
+        assertThat(tableCount).isEqualTo(11);
+    }
+
+    @Test
+    void upgradesExistingBalancesWithAnOpeningMovement() {
+        String schema = "inventory_upgrade_test";
+        Flyway beforeInventory = Flyway.configure().dataSource(dataSource)
+                .schemas(schema).defaultSchema(schema)
+                .locations("classpath:db/migration")
+                .target(MigrationVersion.fromVersion("5")).load();
+        try {
+            beforeInventory.migrate();
+            OffsetDateTime now = OffsetDateTime.ofInstant(
+                    Instant.parse("2026-10-14T12:00:00Z"), ZoneOffset.UTC);
+            long categoryId = jdbcTemplate.queryForObject("""
+                    INSERT INTO inventory_upgrade_test.categories
+                        (code, name, active, created_at, updated_at)
+                    VALUES ('UPGRADE', 'Upgrade', TRUE, ?, ?) RETURNING id
+                    """, Long.class, now, now);
+            long productId = jdbcTemplate.queryForObject("""
+                    INSERT INTO inventory_upgrade_test.products
+                        (sku, name, sale_price, category_id, active, created_at, updated_at)
+                    VALUES ('UPGRADE-01', 'Upgrade product', 1.00, ?, TRUE, ?, ?) RETURNING id
+                    """, Long.class, categoryId, now, now);
+            jdbcTemplate.update("""
+                    INSERT INTO inventory_upgrade_test.inventory_balances
+                        (product_id, quantity, updated_at) VALUES (?, 7, ?)
+                    """, productId, now);
+
+            Flyway.configure().dataSource(dataSource).schemas(schema).defaultSchema(schema)
+                    .locations("classpath:db/migration").load().migrate();
+            assertThat(jdbcTemplate.queryForObject("""
+                    SELECT quantity FROM inventory_upgrade_test.inventory_balances
+                    WHERE product_id = ?
+                    """, Long.class, productId)).isEqualTo(7);
+            assertThat(jdbcTemplate.queryForObject("""
+                    SELECT quantity_change FROM inventory_upgrade_test.inventory_movements
+                    WHERE product_id = ? AND source_type = 'OPENING'
+                    """, Long.class, productId)).isEqualTo(7);
+        } finally {
+            jdbcTemplate.execute("DROP SCHEMA IF EXISTS inventory_upgrade_test CASCADE");
+        }
+    }
+
+    @Test
+    void rejectsMovementsWithTheWrongCommercialSign() {
+        long categoryId = insertCategory("SIGN", "Sign check");
+        long productId = insertProductReturningId("SIGN-01", "Sign product", "1.00", categoryId);
+        OffsetDateTime now = OffsetDateTime.ofInstant(
+                Instant.parse("2026-10-14T12:00:00Z"), ZoneOffset.UTC);
+        assertThatThrownBy(() -> jdbcTemplate.update("""
+                INSERT INTO inventory_movements
+                    (product_id, quantity_change, balance_after, source_type, source_id, created_at)
+                VALUES (?, -1, 0, 'PURCHASE', 1, ?)
+                """, productId, now)).isInstanceOf(DataIntegrityViolationException.class);
+        assertThatThrownBy(() -> jdbcTemplate.update("""
+                INSERT INTO inventory_movements
+                    (product_id, quantity_change, balance_after, source_type, source_id, created_at)
+                VALUES (?, 1, 1, 'SALE', 1, ?)
+                """, productId, now)).isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @Test
+    void rejectsOpeningPurchaseAndSaleWithoutSourceId() {
+        long categoryId = insertCategory("SOURCE", "Source check");
+        long productId = insertProductReturningId("SOURCE-01", "Source product", "1.00", categoryId);
+        OffsetDateTime now = OffsetDateTime.ofInstant(
+                Instant.parse("2026-10-14T12:00:00Z"), ZoneOffset.UTC);
+        for (String type : new String[] {"OPENING", "PURCHASE", "SALE"}) {
+            long change = type.equals("SALE") ? -1 : 1;
+            assertThatThrownBy(() -> jdbcTemplate.update("""
+                    INSERT INTO inventory_movements
+                        (product_id, quantity_change, balance_after, source_type, created_at)
+                    VALUES (?, ?, 1, ?, ?)
+                    """, productId, change, type, now))
+                    .isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
 
     @Test

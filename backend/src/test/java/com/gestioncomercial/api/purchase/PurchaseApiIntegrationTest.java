@@ -43,7 +43,7 @@ class PurchaseApiIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE sale_lines, sales, inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE inventory_movements, sale_lines, sales, inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
     }
 
     @Test
@@ -78,6 +78,12 @@ class PurchaseApiIntegrationTest {
                 .andExpect(jsonPath("$.confirmedAt").exists());
         assertThat(stock(first)).isEqualTo(3);
         assertThat(stock(second)).isEqualTo(2);
+        assertThat(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM inventory_movements WHERE source_type = 'PURCHASE'", Long.class))
+                .isEqualTo(2);
+        mockMvc.perform(get("/api/v1/inventory/balances/{productId}/movements", first))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].quantityChange").value(3))
+                .andExpect(jsonPath("$.content[0].balanceAfter").value(3));
         jdbcTemplate.update("UPDATE products SET sale_price = 99.00 WHERE id = ?", first);
         mockMvc.perform(get("/api/v1/purchases/{id}", id)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.lines[0].unitPrice").value(2.5))
@@ -86,6 +92,8 @@ class PurchaseApiIntegrationTest {
                 .andExpect(status().isConflict()).andExpect(jsonPath("$.code").value("PURCHASE_STATE_CONFLICT"));
         assertThat(stock(first)).isEqualTo(3);
         assertThat(stock(second)).isEqualTo(2);
+        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_movements", Long.class))
+                .isEqualTo(2);
         mockMvc.perform(get("/api/v1/purchases").param("status", "CONFIRMED"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.totalElements").value(1));
     }
@@ -155,6 +163,7 @@ class PurchaseApiIntegrationTest {
                 .andExpect(status().isInternalServerError());
         assertThat(stock(first)).isZero();
         assertThat(stock(second)).isEqualTo(Long.MAX_VALUE);
+        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_movements", Long.class)).isZero();
         mockMvc.perform(get("/api/v1/purchases/{id}", purchaseId))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.status").value("DRAFT"));
     }
@@ -174,6 +183,8 @@ class PurchaseApiIntegrationTest {
             start.countDown();
             assertThat(first.get()).isNotEqualTo(second.get());
             assertThat(stock(productId)).isEqualTo(4);
+            assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_movements", Long.class))
+                    .isEqualTo(1);
         } finally {
             executor.shutdownNow();
         }

@@ -45,7 +45,7 @@ class CustomerApiIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE sale_lines, sales, customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE inventory_movements, sale_lines, sales, customers RESTART IDENTITY");
     }
 
     @Test

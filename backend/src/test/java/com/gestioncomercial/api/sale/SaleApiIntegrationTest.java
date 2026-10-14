@@ -44,7 +44,7 @@ class SaleApiIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE sale_lines, sales, inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE inventory_movements, sale_lines, sales, inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
     }
 
     @Test
@@ -74,6 +74,9 @@ class SaleApiIntegrationTest {
                 .andExpect(jsonPath("$.confirmedAt").exists());
         assertThat(stock(first)).isEqualTo(2);
         assertThat(stock(second)).isEqualTo(1);
+        assertThat(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM inventory_movements WHERE source_type = 'SALE'", Long.class))
+                .isEqualTo(2);
         mockMvc.perform(get("/api/v1/sales/{id}", saleId)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.lines[0].unitPrice").value(2.5))
                 .andExpect(jsonPath("$.total").value(10.0));
@@ -141,6 +144,7 @@ class SaleApiIntegrationTest {
                 .andExpect(status().isConflict()).andExpect(jsonPath("$.code").value("INSUFFICIENT_STOCK"));
         assertThat(stock(first)).isEqualTo(5);
         assertThat(stock(second)).isEqualTo(1);
+        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_movements", Long.class)).isZero();
         assertThat(saleStatus(saleId)).isEqualTo("DRAFT");
     }
 
@@ -160,6 +164,8 @@ class SaleApiIntegrationTest {
             start.countDown();
             assertThat(first.get()).isNotEqualTo(second.get());
             assertThat(stock(productId)).isEqualTo(1);
+            assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inventory_movements", Long.class))
+                    .isEqualTo(1);
             assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM sales WHERE status = 'CONFIRMED'", Long.class))
                     .isEqualTo(1);
         } finally {
