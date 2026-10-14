@@ -14,20 +14,22 @@
 ## Estado de continuidad
 
 - Fase activa: ninguna.
-- Último trabajo realizado: cierre aprobado de V6, con módulo Supplier, vínculos con productos, reglas simétricas de ciclo de vida y paginación reutilizada.
+- Último trabajo realizado: cierre aprobado de V7 con compras, confirmación atómica y saldo mínimo de Inventory.
+- Estado de V7: cerrada y aprobada el 2026-10-13; versión de cierre `v7`; 83 pruebas en verde.
 - Estado de V6: cerrada y aprobada el 2026-09-23; versión de cierre `v6`; 75 pruebas en verde.
 - Estado de V5: cerrada y aprobada el 2026-09-18; versión de cierre `v5`; 52 pruebas en verde.
 - Estado de V4: cerrada y aprobada el 2026-09-18; versión de cierre `v4`; 27 pruebas en verde.
 - Estado de V3: cerrada y aprobada el 2026-09-17; versión de cierre `v3`; 9 pruebas en verde.
 - Estado de V2: cerrada y aprobada el 2026-09-17; versión de cierre `v2`.
 - Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
-- Código funcional existente: backend Spring Boot con módulos Customer, Catalog y Supplier, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
-- Migraciones existentes: `V1__create_customers.sql`, `V2__create_catalog.sql` y `V3__create_supplier.sql`, aplicadas por Flyway desde una base vacía.
-- Pruebas automatizadas existentes: 75 pruebas en verde; cubren Customer, Catalog, Supplier, paginación, Flyway, PostgreSQL 17, relaciones, importes, restricciones, transacciones y regresión V2–V5.
+- Código funcional existente: backend Spring Boot con módulos Customer, Catalog, Supplier, Purchase y saldo mínimo de Inventory, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
+- Migraciones existentes: `V1__create_customers.sql` a `V4__create_purchases.sql`, aplicadas por Flyway desde una base vacía.
+- Pruebas automatizadas existentes: 83 pruebas en verde; incluyen compras, importes, confirmación única y concurrente, rollback de stock, PostgreSQL 17, restricciones y regresión V2–V6.
 - Cobertura informativa V5: 96.83% de líneas y 82.03% de ramas; sin gate hasta V17.
 - Cobertura informativa V6: 97.36% de líneas y 83.15% de ramas; sin gate hasta V17.
+- Cobertura informativa V7: 97.69% de líneas y 79.75% de ramas; sin gate hasta V17.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: esperar aprobación explícita para preparar V7. No iniciar V7 todavía.
+- Próximo paso: esperar aprobación explícita para preparar V8. No iniciar V8 automáticamente.
 
 ## Decisiones vigentes
 
@@ -45,6 +47,7 @@
 12. V5 reutilizó esta base de paginación para productos y categorías y añadió sus filtros propios.
 13. V6 modela Supplier como dueño del vínculo lógico con Product y consume Catalog mediante su servicio de aplicación.
 14. Catalog protege la desactivación de Product mediante un puerto implementado por Supplier; un producto o proveedor con vínculos activos no puede desactivarse.
+15. V7 incorpora el saldo mínimo bajo propiedad de Inventory; Purchase lo incrementa dentro de la transacción de confirmación. ADR 0005 registra esta decisión.
 
 Los motivos están registrados en `docs/architecture/decisions/`.
 
@@ -106,6 +109,8 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Esquema Catalog V5: `docs/database/catalog-v5.md`.
 - API Supplier V6: `docs/api/suppliers-v6.md`.
 - Esquema Supplier V6: `docs/database/suppliers-v6.md`.
+- API Purchase V7: `docs/api/purchases-v7.md`.
+- Esquema Purchase V7: `docs/database/purchases-v7.md`.
 - Seguridad: `docs/security/role-matrix.md`.
 - API: `docs/api/conventions.md`.
 - Pruebas: `docs/testing/strategy.md`.
@@ -117,6 +122,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Evidencia de revisión V4: `docs/operations/v4-review.md`.
 - Evidencia de revisión V5: `docs/operations/v5-review.md`.
 - Evidencia de revisión V6: `docs/operations/v6-review.md`.
+- Evidencia de revisión V7: `docs/operations/v7-review.md`.
 - Riesgos: `docs/risks.md`.
 
 ## Regla de actualización

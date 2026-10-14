@@ -43,3 +43,5 @@ V3 realizó el spike mínimo de persistencia. V4 estableció el baseline de Flyw
 V5 concreta Category y Product como maestros separados. Cada Product pertenece obligatoriamente a una Category y conserva un precio de venta vigente, positivo y expresado en PEN mediante un decimal de escala explícita. Los importes transaccionales futuros seguirán siendo snapshots propios de compras y ventas.
 
 V6 concreta Supplier como maestro y `SUPPLIER_PRODUCT` como asociación única entre proveedor y producto. La asociación conserva estado lógico y un código opcional propio del proveedor; los precios de compra e importes históricos permanecen fuera hasta V7.
+
+V7 concreta Purchase como raíz con líneas privadas. La compra nace en `DRAFT` y pasa una sola vez a `CONFIRMED`; cada línea conserva cantidad, precio unitario y subtotal, y la cabecera conserva el total en PEN. Inventory incorpora un saldo mínimo por producto para registrar la entrada atómica de stock. El ledger y los movimientos explicativos siguen previstos para V9.

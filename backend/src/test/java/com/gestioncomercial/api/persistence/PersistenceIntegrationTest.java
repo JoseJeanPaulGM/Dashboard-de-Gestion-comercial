@@ -40,7 +40,7 @@ class PersistenceIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbcTemplate.execute("TRUNCATE TABLE supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
+        jdbcTemplate.execute("TRUNCATE TABLE inventory_balances, purchase_lines, purchases, supplier_products, suppliers, products, categories, customers RESTART IDENTITY");
     }
 
     @Test
@@ -54,17 +54,18 @@ class PersistenceIntegrationTest {
 
     @Test
     void appliesAllFlywayMigrationsAndCreatesTheExpectedTables() {
-        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("3");
+        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("4");
 
         Integer tableCount = jdbcTemplate.queryForObject(
                 """
                 SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_schema = 'public'
-                  AND table_name IN ('customers', 'categories', 'products', 'suppliers', 'supplier_products')
+                  AND table_name IN ('customers', 'categories', 'products', 'suppliers', 'supplier_products',
+                                     'purchases', 'purchase_lines', 'inventory_balances')
                 """,
                 Integer.class
         );
-        assertThat(tableCount).isEqualTo(5);
+        assertThat(tableCount).isEqualTo(8);
     }
 
     @Test

@@ -9,6 +9,9 @@ import com.gestioncomercial.api.catalog.domain.ProductNotFoundException;
 import com.gestioncomercial.api.catalog.domain.ProductSkuConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerDocumentConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerNotFoundException;
+import com.gestioncomercial.api.purchase.domain.PurchaseNotFoundException;
+import com.gestioncomercial.api.purchase.domain.PurchaseStateConflictException;
+import com.gestioncomercial.api.purchase.domain.PurchaseSupplyUnavailableException;
 import com.gestioncomercial.api.shared.observability.CorrelationIdFilter;
 import com.gestioncomercial.api.shared.pagination.InvalidPaginationException;
 import com.gestioncomercial.api.shared.pagination.InvalidSortException;
@@ -251,6 +254,27 @@ public class GlobalExceptionHandler {
                                                                       HttpServletRequest request) {
         return response(HttpStatus.CONFLICT, "Supplier product party inactive", exception.getMessage(),
                 "SUPPLIER_PRODUCT_INACTIVE_PARTY", request);
+    }
+
+    @ExceptionHandler(PurchaseNotFoundException.class)
+    ResponseEntity<ProblemDetail> handlePurchaseNotFound(PurchaseNotFoundException exception,
+                                                         HttpServletRequest request) {
+        return response(HttpStatus.NOT_FOUND, "Purchase not found", exception.getMessage(),
+                "PURCHASE_NOT_FOUND", request);
+    }
+
+    @ExceptionHandler(PurchaseStateConflictException.class)
+    ResponseEntity<ProblemDetail> handlePurchaseStateConflict(PurchaseStateConflictException exception,
+                                                              HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Purchase state conflict", exception.getMessage(),
+                "PURCHASE_STATE_CONFLICT", request);
+    }
+
+    @ExceptionHandler(PurchaseSupplyUnavailableException.class)
+    ResponseEntity<ProblemDetail> handlePurchaseSupplyUnavailable(PurchaseSupplyUnavailableException exception,
+                                                                  HttpServletRequest request) {
+        return response(HttpStatus.CONFLICT, "Purchase supply unavailable", exception.getMessage(),
+                "PURCHASE_SUPPLY_UNAVAILABLE", request);
     }
 
     @ExceptionHandler(Exception.class)

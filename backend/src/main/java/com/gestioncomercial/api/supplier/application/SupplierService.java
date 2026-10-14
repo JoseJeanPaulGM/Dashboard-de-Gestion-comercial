@@ -101,6 +101,11 @@ public class SupplierService {
                 supplierId, active, normalizeSearch(search), criteria));
     }
 
+    public boolean hasActiveProductLink(long supplierId, long productId) {
+        return supplierProductRepository.findBySupplierIdAndProductId(supplierId, productId)
+                .map(SupplierProduct::isActive).orElse(false);
+    }
+
     @Transactional
     public SupplierProduct updateProductCode(long supplierId, long productId, String supplierProductCode) {
         SupplierProduct link = link(supplierId, productId);

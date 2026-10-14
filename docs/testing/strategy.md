@@ -58,6 +58,12 @@ V6 añade pruebas de dominio, API y persistencia para Supplier y su vínculo con
 
 La verificación del 2026-09-23 ejecutó 75 pruebas contra PostgreSQL 17.11: 0 fallos, 0 errores y 0 omitidas. También aplicó tres migraciones Flyway desde un esquema vacío y conservó la regresión V2–V5. JaCoCo midió 97.36% de líneas y 83.15% de ramas; estos valores son informativos y no constituyen un gate antes de V17.
 
+## Evidencia de V7
+
+V7 añade pruebas de dominio, API y persistencia para Purchase y el saldo mínimo de Inventory. Cubren cálculo de subtotales y total, validaciones, vínculos activos proveedor–producto, consulta y paginación, transición única, dos confirmaciones concurrentes, incremento de stock una sola vez y rollback de todos los saldos ante un fallo en una línea posterior. También comprueban la cuarta migración Flyway aplicada desde una base vacía y conservan la regresión V2–V6.
+
+La verificación final del 2026-10-13 ejecutó 83 pruebas contra PostgreSQL 17.11: 0 fallos, 0 errores y 0 omitidas. `test` y `verify` terminaron en `BUILD SUCCESS`. JaCoCo midió 97.69% de líneas y 79.75% de ramas; sigue siendo informativo y sin gate antes de V17. V7 fue aprobada para cierre el 2026-10-13.
+
 ## Datos y aislamiento
 
 Las pruebas crearán sus propios datos y no dependerán del orden de ejecución. Desde V3, las integraciones PostgreSQL usan una base descartable de Testcontainers. No se copiarán datos de producción ni se usará la base local de desarrollo.

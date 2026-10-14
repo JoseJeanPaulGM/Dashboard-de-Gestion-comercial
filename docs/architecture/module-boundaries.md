@@ -29,6 +29,7 @@ Cada módulo será propietario de su modelo, casos de uso, contratos y persisten
 4. Identity decide autoridades internas. Los proveedores OIDC solo prueban identidad externa.
 5. Una dependencia circular obliga a revisar límites antes de introducir soluciones técnicas.
 6. Catalog define el puerto que protege la desactivación de Product; Supplier lo implementa con sus vínculos propios. Catalog no consulta repositorios ni entidades internas de Supplier.
+7. Desde V7, Inventory es dueño del saldo mínimo por producto. Purchase incrementa existencias exclusivamente mediante su servicio de aplicación y en la misma transacción de confirmación. El ledger y las demás capacidades de Inventory llegarán en V9.
 
 ## Estructura futura orientativa
 
