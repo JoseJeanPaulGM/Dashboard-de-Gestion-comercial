@@ -4,14 +4,16 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Última fase cerrada: **V5 — Categorías y productos** (2026-09-18), versión `v5`.
+- Última fase cerrada: **V7 — Compras** (2026-10-13), versión `v7`.
 - Fase activa: ninguna.
-- Código funcional: backend Spring Boot con módulos Customer y Catalog, API paginada, Flyway, PostgreSQL y 52 pruebas automatizadas.
+- Código funcional: backend Spring Boot con módulos Customer, Catalog, Supplier y Purchase; saldo mínimo de Inventory, API paginada, Flyway y PostgreSQL. La confirmación de compras incrementa existencias una sola vez en una transacción.
+- Verificación de V7: 83 pruebas automatizadas en verde contra PostgreSQL 17.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente paso: V6 permanece pendiente y no está autorizada para iniciar.
+- Siguiente paso: V8 permanece pendiente y requiere aprobación explícita antes de iniciar.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
+El contrato de compras está en [docs/api/purchases-v7.md](docs/api/purchases-v7.md) y su esquema en [docs/database/purchases-v7.md](docs/database/purchases-v7.md).
 
 ## Alcance del producto
 
