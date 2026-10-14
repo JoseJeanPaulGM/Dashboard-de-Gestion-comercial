@@ -90,7 +90,7 @@ public class PurchaseService {
         }
         purchase.getLines().stream()
                 .sorted((left, right) -> Long.compare(left.getProduct().getId(), right.getProduct().getId()))
-                .forEach(line -> stock.increase(line.getProduct().getId(), line.getQuantity()));
+                .forEach(line -> stock.recordPurchase(line.getProduct().getId(), line.getQuantity(), line.getId()));
         purchase.confirm(clock);
         return purchases.save(purchase);
     }

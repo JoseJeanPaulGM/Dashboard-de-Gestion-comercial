@@ -6,27 +6,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InventoryStockService {
-    private final InventoryBalanceRepository balances;
+    private final InventoryRepository inventory;
 
-    public InventoryStockService(InventoryBalanceRepository balances) {
-        this.balances = balances;
+    public InventoryStockService(InventoryRepository inventory) {
+        this.inventory = inventory;
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public void increase(long productId, long quantity) {
+    public void recordPurchase(long productId, long quantity, long purchaseLineId) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("quantity must be positive");
         }
-        balances.increase(productId, quantity);
+        long balance = inventory.increase(productId, quantity);
+        inventory.recordMovement(productId, quantity, balance, "PURCHASE", purchaseLineId, null, null);
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public void decrease(long productId, long quantity) {
+    public void recordSale(long productId, long quantity, long saleLineId) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("quantity must be positive");
         }
-        if (!balances.decreaseIfAvailable(productId, quantity)) {
-            throw new InsufficientStockException();
-        }
+        long balance = inventory.decrease(productId, quantity)
+                .orElseThrow(InsufficientStockException::new);
+        inventory.recordMovement(productId, -quantity, balance, "SALE", saleLineId, null, null);
     }
 }

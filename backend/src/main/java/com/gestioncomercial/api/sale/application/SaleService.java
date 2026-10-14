@@ -87,7 +87,7 @@ public class SaleService {
         }
         sale.getLines().stream()
                 .sorted((left, right) -> Long.compare(left.getProduct().getId(), right.getProduct().getId()))
-                .forEach(line -> stock.decrease(line.getProduct().getId(), line.getQuantity()));
+                .forEach(line -> stock.recordSale(line.getProduct().getId(), line.getQuantity(), line.getId()));
         sale.confirm(clock);
         return sales.save(sale);
     }
