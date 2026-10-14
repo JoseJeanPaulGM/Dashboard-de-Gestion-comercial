@@ -64,6 +64,12 @@ V7 añade pruebas de dominio, API y persistencia para Purchase y el saldo mínim
 
 La verificación final del 2026-10-13 ejecutó 83 pruebas contra PostgreSQL 17.11: 0 fallos, 0 errores y 0 omitidas. `test` y `verify` terminaron en `BUILD SUCCESS`. JaCoCo midió 97.69% de líneas y 79.75% de ramas; sigue siendo informativo y sin gate antes de V17. V7 fue aprobada para cierre el 2026-10-13.
 
+## Evidencia de V8
+
+V8 añade pruebas de dominio, API y persistencia para Sale. Cubren cálculo con precio de Catalog como snapshot, validaciones, estados, filtros, stock insuficiente, rollback de una línea anterior y dos ventas concurrentes sobre el mismo producto. La suite comprueba la quinta migración Flyway desde un esquema vacío y conserva la regresión V2–V7.
+
+La verificación del 2026-10-13 ejecutó 90 pruebas contra PostgreSQL 17.11: 0 fallos, 0 errores y 0 omitidas. `test` y `verify` terminaron en `BUILD SUCCESS`. JaCoCo midió 97.49% de líneas y 77.63% de ramas; sigue siendo informativo y sin gate antes de V17. V8 fue aprobada para cierre el 2026-10-14.
+
 ## Datos y aislamiento
 
 Las pruebas crearán sus propios datos y no dependerán del orden de ejecución. Desde V3, las integraciones PostgreSQL usan una base descartable de Testcontainers. No se copiarán datos de producción ni se usará la base local de desarrollo.

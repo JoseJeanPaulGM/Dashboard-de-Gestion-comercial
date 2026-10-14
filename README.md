@@ -4,16 +4,17 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Última fase cerrada: **V7 — Compras** (2026-10-13), versión `v7`.
+- Última fase cerrada: **V8 — Ventas** (2026-10-14), versión `v8`.
 - Fase activa: ninguna.
-- Código funcional: backend Spring Boot con módulos Customer, Catalog, Supplier y Purchase; saldo mínimo de Inventory, API paginada, Flyway y PostgreSQL. La confirmación de compras incrementa existencias una sola vez en una transacción.
-- Verificación de V7: 83 pruebas automatizadas en verde contra PostgreSQL 17.
+- Código funcional: backend Spring Boot con módulos Customer, Catalog, Supplier, Purchase y Sale; saldo mínimo de Inventory, API paginada, Flyway y PostgreSQL. Las compras incrementan stock y las ventas lo descuentan de forma atómica, con control de concurrencia.
+- Verificación de V8: 90 pruebas automatizadas en verde contra PostgreSQL 17.11.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente paso: V8 permanece pendiente y requiere aprobación explícita antes de iniciar.
+- Siguiente paso: V9 permanece pendiente y requiere aprobación explícita antes de iniciar.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
 El contrato de compras está en [docs/api/purchases-v7.md](docs/api/purchases-v7.md) y su esquema en [docs/database/purchases-v7.md](docs/database/purchases-v7.md).
+El contrato de ventas está en [docs/api/sales-v8.md](docs/api/sales-v8.md), su esquema en [docs/database/sales-v8.md](docs/database/sales-v8.md) y la evidencia de cierre en [docs/operations/v8-review.md](docs/operations/v8-review.md).
 
 ## Alcance del producto
 

@@ -11,7 +11,7 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 | V5 | productos y categorías | relaciones, dinero y ampliación de la paginación de V4 | Cerrada (2026-09-18) |
 | V6 | proveedores | asociaciones y reglas de ciclo de vida | Cerrada (2026-09-23) |
 | V7 | compras | agregados y atomicidad | Cerrada (2026-10-13) |
-| V8 | ventas | stock, locking y concurrencia | Pendiente |
+| V8 | ventas | stock, locking y concurrencia | Cerrada (2026-10-14) |
 | V9 | inventario | ledger, trazabilidad e idempotencia | Pendiente |
 | V10 | usuarios, RBAC y JWT | seguridad de API | Pendiente |
 | V11 | interfaz Angular | componentes, RxJS y formularios | Pendiente |

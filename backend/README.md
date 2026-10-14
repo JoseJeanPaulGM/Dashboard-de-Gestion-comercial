@@ -1,6 +1,6 @@
 # Backend — Gestión Comercial API
 
-Backend de Gestión Comercial con los módulos Customer y Catalog, API REST paginada y esquema PostgreSQL administrado por Flyway. La seguridad permanece reservada para V10.
+Backend de Gestión Comercial con Customer, Catalog, Supplier, Purchase, Sale y saldo mínimo de Inventory. La API REST usa PostgreSQL y Flyway. La seguridad permanece reservada para V10.
 
 ## Tecnologías activas
 
@@ -65,6 +65,13 @@ Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boo
 | `GET /api/v1/products` | listar, filtrar y buscar productos con paginación |
 | `PUT /api/v1/products/{id}` | actualizar producto |
 | `PATCH /api/v1/products/{id}/status` | activar o desactivar producto |
+| `/api/v1/suppliers` y `/api/v1/suppliers/{id}` | crear, consultar y listar proveedores; actualizar estado y vínculos con productos |
+| `POST /api/v1/purchases` | crear compra borrador |
+| `GET /api/v1/purchases` y `GET /api/v1/purchases/{id}` | listar y consultar compras |
+| `POST /api/v1/purchases/{id}/confirm` | confirmar compra e incrementar stock |
+| `POST /api/v1/sales` | crear venta borrador con precios de Catalog |
+| `GET /api/v1/sales` y `GET /api/v1/sales/{id}` | listar y consultar ventas |
+| `POST /api/v1/sales/{id}/confirm` | confirmar venta y descontar stock disponible |
 
 La especificación base está en [backend-base.md](../docs/api/backend-base.md).
 
@@ -73,3 +80,5 @@ La persistencia de V3 está documentada en [persistence-v3.md](../docs/database/
 El contrato Customer y el esquema V4 están documentados en [customers-v4.md](../docs/api/customers-v4.md) y [customers-v4.md](../docs/database/customers-v4.md).
 
 El contrato Catalog y el esquema V5 están documentados en [catalog-v5.md](../docs/api/catalog-v5.md) y [catalog-v5.md](../docs/database/catalog-v5.md).
+
+Los contratos de [Supplier V6](../docs/api/suppliers-v6.md), [Purchase V7](../docs/api/purchases-v7.md) y [Sale V8](../docs/api/sales-v8.md) detallan las reglas comerciales y sus esquemas enlazados desde el [índice de documentación](../docs/README.md).

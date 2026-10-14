@@ -45,3 +45,5 @@ V5 concreta Category y Product como maestros separados. Cada Product pertenece o
 V6 concreta Supplier como maestro y `SUPPLIER_PRODUCT` como asociación única entre proveedor y producto. La asociación conserva estado lógico y un código opcional propio del proveedor; los precios de compra e importes históricos permanecen fuera hasta V7.
 
 V7 concreta Purchase como raíz con líneas privadas. La compra nace en `DRAFT` y pasa una sola vez a `CONFIRMED`; cada línea conserva cantidad, precio unitario y subtotal, y la cabecera conserva el total en PEN. Inventory incorpora un saldo mínimo por producto para registrar la entrada atómica de stock. El ledger y los movimientos explicativos siguen previstos para V9.
+
+V8 concreta Sale como raíz con líneas privadas y estados `DRAFT`/`CONFIRMED`. Cada línea copia el precio vigente de Catalog al crear la venta; al confirmar se descuenta el saldo mediante Inventory en una transacción. El ledger y los movimientos permanecen en V9.
