@@ -47,3 +47,5 @@ V6 concreta Supplier como maestro y `SUPPLIER_PRODUCT` como asociación única e
 V7 concreta Purchase como raíz con líneas privadas. La compra nace en `DRAFT` y pasa una sola vez a `CONFIRMED`; cada línea conserva cantidad, precio unitario y subtotal, y la cabecera conserva el total en PEN. Inventory incorpora un saldo mínimo por producto para registrar la entrada atómica de stock. El ledger y los movimientos explicativos siguen previstos para V9.
 
 V8 concreta Sale como raíz con líneas privadas y estados `DRAFT`/`CONFIRMED`. Cada línea copia el precio vigente de Catalog al crear la venta; al confirmar se descuenta el saldo mediante Inventory en una transacción. El ledger y los movimientos permanecen en V9.
+
+V9 concreta el ledger de Inventory: un saldo por producto con mínimo opcional y movimientos de apertura, compra, venta o ajuste. La referencia única a la línea comercial y la clave única del ajuste impiden duplicados; cada movimiento conserva el saldo resultante. Los saldos anteriores a V9 se incorporan como aperturas, sin reconstruir la secuencia histórica previa.

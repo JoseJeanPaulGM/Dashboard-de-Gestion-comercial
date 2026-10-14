@@ -23,14 +23,15 @@ Cada módulo será propietario de su modelo, casos de uso, contratos y persisten
 
 ## Reglas de interacción
 
-1. Purchase y Sale solicitan cambios de stock a Inventory; no escriben el saldo directamente cuando V9 esté completada.
+1. Purchase y Sale solicitan cambios de stock a Inventory; nunca escriben sus tablas de saldo o movimientos directamente.
 2. Dashboard y Report consumen proyecciones de lectura y no modifican entidades comerciales.
 3. Audit recibe hechos; no controla el éxito de la operación principal ni almacena secretos.
 4. Identity decide autoridades internas. Los proveedores OIDC solo prueban identidad externa.
 5. Una dependencia circular obliga a revisar límites antes de introducir soluciones técnicas.
 6. Catalog define el puerto que protege la desactivación de Product; Supplier lo implementa con sus vínculos propios. Catalog no consulta repositorios ni entidades internas de Supplier.
-7. Desde V7, Inventory es dueño del saldo mínimo por producto. Purchase incrementa existencias exclusivamente mediante su servicio de aplicación y en la misma transacción de confirmación. El ledger y las demás capacidades de Inventory llegarán en V9.
+7. Desde V7, Inventory es dueño del saldo por producto. Purchase incrementa existencias exclusivamente mediante su servicio de aplicación y en la misma transacción de confirmación.
 8. Desde V8, Sale descuenta existencias exclusivamente mediante el servicio de Inventory en la transacción de confirmación. Sale no accede a la persistencia del saldo.
+9. V9 añade a Inventory movimientos, ajustes, mínimos y alertas de lectura. Purchase y Sale entregan a Inventory la identidad de cada línea confirmada para registrar un movimiento único; el saldo y el movimiento comparten la transacción.
 
 ## Estructura futura orientativa
 

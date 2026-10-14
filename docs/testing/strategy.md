@@ -70,6 +70,12 @@ V8 añade pruebas de dominio, API y persistencia para Sale. Cubren cálculo con 
 
 La verificación del 2026-10-13 ejecutó 90 pruebas contra PostgreSQL 17.11: 0 fallos, 0 errores y 0 omitidas. `test` y `verify` terminaron en `BUILD SUCCESS`. JaCoCo midió 97.49% de líneas y 77.63% de ramas; sigue siendo informativo y sin gate antes de V17. V8 fue aprobada para cierre el 2026-10-14.
 
+## Evidencia de V9 en revisión
+
+V9 añade pruebas de API e integración para ajustes idempotentes, reintentos concurrentes con la misma clave, stock insuficiente, mínimos, alertas y paginación de movimientos. Las pruebas de Purchase y Sale verifican ahora el movimiento por línea, ausencia de duplicados y rollback conjunto de saldo y ledger. La prueba de persistencia cubre tanto las seis migraciones desde una base vacía como la actualización desde V5 con saldo existente y movimiento de apertura, y rechaza signos comerciales incorrectos o referencias de origen nulas por SQL directo.
+
+`verify` ejecutó 96 pruebas contra PostgreSQL 17.11 el 2026-10-14: 0 fallos, 0 errores y 0 omitidas. JaCoCo midió 97.60% de líneas y 76.19% de ramas; continúa siendo informativo y sin gate hasta V17. El cierre de V9 sigue pendiente de revisión y aprobación.
+
 ## Datos y aislamiento
 
 Las pruebas crearán sus propios datos y no dependerán del orden de ejecución. Desde V3, las integraciones PostgreSQL usan una base descartable de Testcontainers. No se copiarán datos de producción ni se usará la base local de desarrollo.

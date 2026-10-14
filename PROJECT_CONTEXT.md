@@ -14,7 +14,8 @@
 ## Estado de continuidad
 
 - Fase activa: ninguna.
-- Último trabajo realizado: cierre aprobado de V8 con ventas, descuento atómico de stock y concurrencia controlada.
+- Último trabajo realizado: cierre aprobado de V9 con ledger de Inventory, ajustes idempotentes, mínimos, alertas y migración de apertura.
+- Estado de V9: cerrada y aprobada el 2026-10-14; versión de cierre `v9`; `verify` exitoso con 96 pruebas contra PostgreSQL 17.11.
 - Estado de V8: cerrada y aprobada el 2026-10-14; versión de cierre `v8`; 90 pruebas en verde.
 - Estado de V7: cerrada y aprobada el 2026-10-13; versión de cierre `v7`; 83 pruebas en verde.
 - Estado de V6: cerrada y aprobada el 2026-09-23; versión de cierre `v6`; 75 pruebas en verde.
@@ -23,15 +24,16 @@
 - Estado de V3: cerrada y aprobada el 2026-09-17; versión de cierre `v3`; 9 pruebas en verde.
 - Estado de V2: cerrada y aprobada el 2026-09-17; versión de cierre `v2`.
 - Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
-- Código funcional existente: backend Spring Boot con módulos Customer, Catalog, Supplier, Purchase, Sale y saldo mínimo de Inventory, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
-- Migraciones existentes: `V1__create_customers.sql` a `V5__create_sales.sql`, aplicadas por Flyway desde una base vacía.
-- Pruebas automatizadas existentes: 90 pruebas en verde; incluyen compras, ventas concurrentes, stock insuficiente, rollback, PostgreSQL 17, restricciones y regresión V2–V7.
+- Código funcional existente: backend Spring Boot con módulos Customer, Catalog, Supplier, Purchase, Sale e Inventory, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
+- Migraciones existentes: `V1__create_customers.sql` a `V6__inventory_ledger.sql`, aplicadas por Flyway desde una base vacía; V6 también se probó sobre un saldo existente de V5.
+- Pruebas automatizadas existentes: 96 pruebas en verde; incluyen compras, ventas concurrentes, ledger, ajuste idempotente concurrente, mínimos, alertas, stock insuficiente, rollback, migración V5→V6 y regresión V2–V8.
+- Cobertura informativa V9: 97.60% de líneas y 76.19% de ramas; sin gate hasta V17.
 - Cobertura informativa V8: 97.49% de líneas y 77.63% de ramas; sin gate hasta V17.
 - Cobertura informativa V5: 96.83% de líneas y 82.03% de ramas; sin gate hasta V17.
 - Cobertura informativa V6: 97.36% de líneas y 83.15% de ramas; sin gate hasta V17.
 - Cobertura informativa V7: 97.69% de líneas y 79.75% de ramas; sin gate hasta V17.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: esperar aprobación explícita para preparar V9. No iniciar V9 automáticamente.
+- Próximo paso: esperar aprobación explícita para preparar V10. No iniciar V10 automáticamente.
 
 ## Decisiones vigentes
 
@@ -51,6 +53,7 @@
 14. Catalog protege la desactivación de Product mediante un puerto implementado por Supplier; un producto o proveedor con vínculos activos no puede desactivarse.
 15. V7 incorpora el saldo mínimo bajo propiedad de Inventory; Purchase lo incrementa dentro de la transacción de confirmación. ADR 0005 registra esta decisión.
 16. V8 descuenta saldo mediante una actualización condicional de Inventory, con líneas ordenadas por producto y confirmación transaccional. ADR 0006 registra esta decisión.
+17. V9 registra un movimiento por variación de stock desde la aplicación, conserva saldos previos como aperturas y serializa reintentos de ajustes por UUID; ADR 0007 registra esta decisión.
 
 Los motivos están registrados en `docs/architecture/decisions/`.
 
@@ -90,6 +93,8 @@ Desde `backend/`:
 
 En V8 ambos comandos terminaron en `BUILD SUCCESS` con 90 pruebas contra PostgreSQL 17.11. La compilación y las 13 pruebas seleccionadas de Sale y persistencia también terminaron correctamente.
 
+En V9, `compile`, la prueba de migración V5→V6, `test` y `verify` terminaron en `BUILD SUCCESS`. La verificación final ejecutó 96 pruebas contra PostgreSQL 17.11. `git diff --check` no detectó errores de espacios. Se ejecutaron las pruebas de integración fuera del sandbox por el acceso al named pipe de Docker.
+
 Las pruebas de integración requieren Docker Desktop operativo y usan `postgres:17-alpine` mediante Testcontainers. En el entorno del agente deben ejecutarse fuera del sandbox para acceder al named pipe de Docker.
 
 Para inspeccionar Git en este entorno:
@@ -118,6 +123,8 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Esquema Purchase V7: `docs/database/purchases-v7.md`.
 - API Sale V8: `docs/api/sales-v8.md`.
 - Esquema Sale V8: `docs/database/sales-v8.md`.
+- API Inventory V9: `docs/api/inventory-v9.md`.
+- Esquema Inventory V9: `docs/database/inventory-v9.md`.
 - Seguridad: `docs/security/role-matrix.md`.
 - API: `docs/api/conventions.md`.
 - Pruebas: `docs/testing/strategy.md`.
@@ -131,6 +138,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Evidencia de revisión V6: `docs/operations/v6-review.md`.
 - Evidencia de revisión V7: `docs/operations/v7-review.md`.
 - Evidencia de revisión V8: `docs/operations/v8-review.md`.
+- Evidencia de revisión V9: `docs/operations/v9-review.md`.
 - Riesgos: `docs/risks.md`.
 
 ## Regla de actualización

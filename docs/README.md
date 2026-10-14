@@ -16,6 +16,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Esquema Supplier V6](database/suppliers-v6.md)
 - [Esquema Purchase V7](database/purchases-v7.md)
 - [Esquema Sale V8](database/sales-v8.md)
+- [Esquema Inventory V9](database/inventory-v9.md)
 - [Convenciones de API](api/conventions.md)
 - [Backend base V2](api/backend-base.md)
 - [API Customer V4](api/customers-v4.md)
@@ -23,6 +24,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [API Supplier V6](api/suppliers-v6.md)
 - [API Purchase V7](api/purchases-v7.md)
 - [API Sale V8](api/sales-v8.md)
+- [API Inventory V9](api/inventory-v9.md)
 - [Matriz de roles](security/role-matrix.md)
 - [Estrategia de pruebas](testing/strategy.md)
 - [Flujo Git](devops/git-workflow.md)
@@ -35,6 +37,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Revisión de V6](operations/v6-review.md)
 - [Revisión de V7](operations/v7-review.md)
 - [Revisión de V8](operations/v8-review.md)
+- [Revisión de V9](operations/v9-review.md)
 
 ## Directorios por disciplina
 
