@@ -55,7 +55,7 @@ class PersistenceIntegrationTest {
 
     @Test
     void appliesAllFlywayMigrationsAndCreatesTheExpectedTables() {
-        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("6");
+        assertThat(flyway.info().current().getVersion().getVersion()).isEqualTo("7");
 
         Integer tableCount = jdbcTemplate.queryForObject(
                 """
@@ -63,11 +63,12 @@ class PersistenceIntegrationTest {
                 WHERE table_schema = 'public'
                   AND table_name IN ('customers', 'categories', 'products', 'suppliers', 'supplier_products',
                                      'purchases', 'purchase_lines', 'inventory_balances', 'sales', 'sale_lines',
-                                     'inventory_movements')
+                                     'inventory_movements', 'app_users', 'roles', 'permissions',
+                                     'role_permissions', 'user_roles', 'refresh_sessions')
                 """,
                 Integer.class
         );
-        assertThat(tableCount).isEqualTo(11);
+        assertThat(tableCount).isEqualTo(17);
     }
 
     @Test

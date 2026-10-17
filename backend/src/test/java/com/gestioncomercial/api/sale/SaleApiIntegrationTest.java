@@ -36,6 +36,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Import(PostgreSqlTestConfiguration.class)
+@org.springframework.security.test.context.support.WithMockUser(authorities = {"SALE_READ", "SALE_WRITE", "CUSTOMER_READ", "CUSTOMER_WRITE", "CATALOG_READ", "CATALOG_WRITE"})
 class SaleApiIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;

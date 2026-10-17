@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Import(PostgreSqlTestConfiguration.class)
+@org.springframework.security.test.context.support.WithMockUser(authorities = {"INVENTORY_READ", "INVENTORY_ADJUST"})
 class InventoryApiIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private JdbcTemplate jdbc;
