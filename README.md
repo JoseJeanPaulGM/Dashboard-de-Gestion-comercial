@@ -4,19 +4,20 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Última fase cerrada: **V10 — Identity, RBAC y JWT** (2026-10-17), versión `v10`.
+- Última fase cerrada: **V11 — interfaz Angular** (2026-10-17), versión `v11`.
 - Fase activa: ninguna.
-- Código funcional: backend Spring Boot con Customer, Catalog, Supplier, Purchase, Sale, Inventory e Identity; API paginada, Flyway y PostgreSQL. Las compras y ventas cambian stock y generan movimientos atómicos; Inventory ofrece ajustes idempotentes, mínimos y alertas. Identity incorpora login local, permisos y sesiones revocables.
-- Verificación de V10: 108 pruebas automatizadas en verde contra PostgreSQL 17.11; `verify` completado el 2026-10-17.
+- Código funcional: backend Spring Boot con Customer, Catalog, Supplier, Purchase, Sale, Inventory e Identity; API paginada, Flyway y PostgreSQL. El frontend Angular 18 muestra los módulos existentes con formularios reactivos y datos ficticios en memoria. La conexión HTTP y la sesión frontend corresponden a V12.
+- Verificación de V11: build Angular y 10 pruebas frontend en verde. V10 conserva 108 pruebas backend en verde contra PostgreSQL 17.11.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente paso: esperar una nueva aprobación antes de preparar V11. No se inicia la siguiente versión automáticamente.
+- Siguiente paso: esperar una nueva solicitud y aprobación antes de preparar V12. No se inicia la siguiente versión automáticamente.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
 El contrato de compras está en [docs/api/purchases-v7.md](docs/api/purchases-v7.md) y su esquema en [docs/database/purchases-v7.md](docs/database/purchases-v7.md).
 El contrato de ventas está en [docs/api/sales-v8.md](docs/api/sales-v8.md), su esquema en [docs/database/sales-v8.md](docs/database/sales-v8.md) y la evidencia de cierre en [docs/operations/v8-review.md](docs/operations/v8-review.md).
 El contrato de inventario está en [docs/api/inventory-v9.md](docs/api/inventory-v9.md), su esquema en [docs/database/inventory-v9.md](docs/database/inventory-v9.md) y la evidencia de cierre en [docs/operations/v9-review.md](docs/operations/v9-review.md).
 El contrato de seguridad está en [docs/api/identity-v10.md](docs/api/identity-v10.md), su configuración en [docs/security/identity-v10.md](docs/security/identity-v10.md) y la evidencia de cierre en [docs/operations/v10-review.md](docs/operations/v10-review.md).
+La interfaz y sus comandos de arranque están en [frontend/README.md](frontend/README.md), y la evidencia de V11 en [docs/operations/v11-review.md](docs/operations/v11-review.md).
 
 ## Alcance del producto
 
@@ -29,7 +30,7 @@ La evolución prevista incluye Java 17, Spring Boot, PostgreSQL, Angular 18, JWT
 ```text
 .
 ├── backend/                # API Spring Boot activa desde V2
-├── frontend/               # Reservado para Angular desde V11
+├── frontend/               # Interfaz Angular 18 de demostración desde V11
 ├── docs/                   # Documentación viva por disciplina
 ├── .github/                # Plantillas y, desde V17, workflows
 ├── AGENTS.md               # Reglas operativas para futuros agentes

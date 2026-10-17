@@ -16,7 +16,8 @@
 | slice | MVC, repositorios y seguridad aislada | V2/V3 |
 | integración | Spring + PostgreSQL + transacciones | V3 |
 | contrato/API | request, status, headers y JSON | V2 |
-| frontend | componentes, servicios, formularios e interceptores | V11 |
+| frontend | componentes y formularios | V11 |
+| integración frontend | servicios HTTP, sesión e interceptores | V12 |
 | E2E | flujos críticos desde navegador | V12 |
 | smoke | salud del artefacto o despliegue | V17/V18 |
 | operación | rollback, backup/restore e incidentes | V18 |
@@ -83,6 +84,12 @@ V10 añade diez pruebas de API/integración de Identity y dos de configuración/
 La regresión comercial conserva sus escenarios con usuarios simulados y permisos explícitos para sus fixtures. Las pruebas de autorización de Identity usan tokens reales; sus fallos no imprimen automáticamente cuerpos ni cabeceras sensibles. El perfil test genera su clave de firma en memoria, deshabilita el bootstrap y mantiene PostgreSQL Testcontainers.
 
 La verificación del 2026-10-17 terminó en `BUILD SUCCESS`: **108 pruebas**, 0 fallos, 0 errores y 0 omitidas, contra PostgreSQL 17.11. Se aplicaron siete migraciones desde una base vacía y se mantuvo la actualización con saldo previo desde V5. JaCoCo midió 97.13% de líneas y 77.29% de ramas, con carácter informativo y sin gate hasta V17. La evidencia y las correcciones aprobadas están en [v10-review.md](../operations/v10-review.md). V10 fue aprobada para cierre el 2026-10-17.
+
+## Evidencia de V11
+
+V11 añade una aplicación Angular 18 con estado ficticio en memoria. Diez pruebas frontend verifican observación RxJS, ausencia de contraseñas en el estado local, validación de formularios, alta de registros, cálculo y confirmación única de compra, precio de venta del catálogo, rechazo atómico de venta sin stock, ajustes inválidos y configuración de mínimos. `npm run build` terminó correctamente y `npm test -- --watch=false --browsers=ChromeHeadless` ejecutó 10 pruebas sin fallos fuera del sandbox, porque ChromeHeadless no pudo iniciar dentro de él.
+
+La revisión manual con Playwright confirmó la vista de clientes, el alta de un cliente ficticio, la apertura de compras e inventario y cero errores de consola. La conexión HTTP, la sesión y las pruebas E2E de integración siguen asignadas a V12. V11 fue aprobada para cierre el 2026-10-17. El detalle de comandos y pendientes figura en [v11-review.md](../operations/v11-review.md).
 
 ## Datos y aislamiento
 

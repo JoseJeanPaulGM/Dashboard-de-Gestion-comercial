@@ -29,6 +29,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [API Identity V10](api/identity-v10.md)
 - [Matriz de roles](security/role-matrix.md)
 - [Seguridad y sesiones V10](security/identity-v10.md)
+- [Interfaz Angular V11](../frontend/README.md)
 - [ADR 0008: Identity local y sesiones](architecture/decisions/0008-local-identity-and-sessions-v10.md)
 - [Estrategia de pruebas](testing/strategy.md)
 - [Flujo Git](devops/git-workflow.md)
@@ -43,6 +44,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Revisión de V8](operations/v8-review.md)
 - [Revisión de V9](operations/v9-review.md)
 - [Revisión y cierre de V10](operations/v10-review.md)
+- [Revisión y cierre de V11](operations/v11-review.md)
 
 ## Directorios por disciplina
 

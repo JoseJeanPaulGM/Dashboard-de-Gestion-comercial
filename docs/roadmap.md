@@ -14,7 +14,7 @@ El roadmap define el orden de aprendizaje. “Previsto” no significa implement
 | V8 | ventas | stock, locking y concurrencia | Cerrada (2026-10-14) |
 | V9 | inventario | ledger, trazabilidad e idempotencia | Cerrada (2026-10-14) |
 | V10 | usuarios, RBAC y JWT | seguridad de API | Cerrada (2026-10-17) |
-| V11 | interfaz Angular | componentes, RxJS y formularios | Pendiente |
+| V11 | interfaz Angular | componentes, RxJS y formularios | Cerrada (2026-10-17) |
 | V12 | integración Full Stack | HTTP, sesión e interceptores | Pendiente |
 | V13 | dashboard y tipo de cambio | agregaciones y resiliencia externa | Pendiente |
 | V14 | reportes | optimización, filtros y CSV | Pendiente |
