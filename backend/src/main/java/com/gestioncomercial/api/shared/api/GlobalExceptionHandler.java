@@ -10,6 +10,7 @@ import com.gestioncomercial.api.catalog.domain.ProductSkuConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerDocumentConflictException;
 import com.gestioncomercial.api.customer.domain.CustomerNotFoundException;
 import com.gestioncomercial.api.inventory.application.InsufficientStockException;
+import com.gestioncomercial.api.identity.application.IdentityException;
 import com.gestioncomercial.api.inventory.application.AdjustmentKeyConflictException;
 import com.gestioncomercial.api.purchase.domain.PurchaseNotFoundException;
 import com.gestioncomercial.api.purchase.domain.PurchaseStateConflictException;
@@ -313,6 +314,12 @@ public class GlobalExceptionHandler {
                                                                HttpServletRequest request) {
         return response(HttpStatus.CONFLICT, "Adjustment key conflict", exception.getMessage(),
                 "ADJUSTMENT_KEY_CONFLICT", request);
+    }
+
+    @ExceptionHandler(IdentityException.class)
+    ResponseEntity<ProblemDetail> handleIdentity(IdentityException exception, HttpServletRequest request) {
+        return response(HttpStatus.valueOf(exception.status()), exception.title(), exception.getMessage(),
+                exception.code(), request);
     }
 
     @ExceptionHandler(Exception.class)
