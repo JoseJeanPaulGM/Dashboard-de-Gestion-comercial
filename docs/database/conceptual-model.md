@@ -17,6 +17,7 @@ erDiagram
     USER ||--o{ AUDIT_EVENT : ejecuta
     USER }o--o{ ROLE : posee
     ROLE }o--o{ PERMISSION : concede
+    USER ||--o{ REFRESH_SESSION : renueva
     USER ||--o{ EXTERNAL_IDENTITY : vincula
 ```
 
@@ -49,3 +50,5 @@ V7 concreta Purchase como raíz con líneas privadas. La compra nace en `DRAFT` 
 V8 concreta Sale como raíz con líneas privadas y estados `DRAFT`/`CONFIRMED`. Cada línea copia el precio vigente de Catalog al crear la venta; al confirmar se descuenta el saldo mediante Inventory en una transacción. El ledger y los movimientos permanecen en V9.
 
 V9 concreta el ledger de Inventory: un saldo por producto con mínimo opcional y movimientos de apertura, compra, venta o ajuste. La referencia única a la línea comercial y la clave única del ajuste impiden duplicados; cada movimiento conserva el saldo resultante. Los saldos anteriores a V9 se incorporan como aperturas, sin reconstruir la secuencia histórica previa.
+
+V10 concreta User, Role, Permission y RefreshSession dentro de Identity. Las asociaciones agrupan permisos internos; los tokens de renovación se persisten solo como hash y tienen expiración/revocación. La versión de usuario permite invalidar JWT anteriores al cambiar estado, contraseña o roles. ExternalIdentity continúa prevista para V16.

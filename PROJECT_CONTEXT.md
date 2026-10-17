@@ -14,7 +14,8 @@
 ## Estado de continuidad
 
 - Fase activa: ninguna.
-- Último trabajo realizado: cierre aprobado de V9 con ledger de Inventory, ajustes idempotentes, mínimos, alertas y migración de apertura.
+- Último trabajo realizado: cierre aprobado de V10 con Identity, RBAC y sesiones JWT, tras revisar implementación, pruebas y documentación. El usuario autorizó integrar en `main` y publicar `main` y la etiqueta `v10` en GitHub.
+- Estado de V10: cerrada y aprobada el 2026-10-17; versión de cierre `v10`; `verify` exitoso con 108 pruebas contra PostgreSQL 17.11.
 - Estado de V9: cerrada y aprobada el 2026-10-14; versión de cierre `v9`; `verify` exitoso con 96 pruebas contra PostgreSQL 17.11.
 - Estado de V8: cerrada y aprobada el 2026-10-14; versión de cierre `v8`; 90 pruebas en verde.
 - Estado de V7: cerrada y aprobada el 2026-10-13; versión de cierre `v7`; 83 pruebas en verde.
@@ -24,16 +25,17 @@
 - Estado de V3: cerrada y aprobada el 2026-09-17; versión de cierre `v3`; 9 pruebas en verde.
 - Estado de V2: cerrada y aprobada el 2026-09-17; versión de cierre `v2`.
 - Estado de V1: cerrada y aprobada el 2026-09-17; versión de cierre `v1`.
-- Código funcional existente: backend Spring Boot con módulos Customer, Catalog, Supplier, Purchase, Sale e Inventory, endpoints REST, paginación compartida y persistencia JPA/PostgreSQL.
-- Migraciones existentes: `V1__create_customers.sql` a `V6__inventory_ledger.sql`, aplicadas por Flyway desde una base vacía; V6 también se probó sobre un saldo existente de V5.
-- Pruebas automatizadas existentes: 96 pruebas en verde; incluyen compras, ventas concurrentes, ledger, ajuste idempotente concurrente, mínimos, alertas, stock insuficiente, rollback, migración V5→V6 y regresión V2–V8.
+- Código funcional existente: backend Spring Boot con Customer, Catalog, Supplier, Purchase, Sale, Inventory e Identity. Spring Security protege la API por permisos; login local, JWT HS256, refresh rotatorio y revocable, administración de usuarios, roles predefinidos, estado y contraseña. Identity usa JDBC propio; los módulos comerciales conservan JPA/PostgreSQL.
+- Migraciones existentes: `V1__create_customers.sql` a `V7__identity.sql`, aplicadas por Flyway desde una base vacía; se mantiene la actualización desde V5 con saldo existente y movimiento de apertura. V7 añade seis tablas de Identity sin credenciales de seed.
+- Pruebas automatizadas existentes: 108 en verde; las 96 anteriores y 12 de Identity. Incluyen matriz completa con JWT reales, validación, revocación, renovación concurrente, renovación frente a desactivación y protección concurrente del último ADMIN.
+- Cobertura informativa V10: 97.13% de líneas y 77.29% de ramas; sin gate hasta V17.
 - Cobertura informativa V9: 97.60% de líneas y 76.19% de ramas; sin gate hasta V17.
 - Cobertura informativa V8: 97.49% de líneas y 77.63% de ramas; sin gate hasta V17.
 - Cobertura informativa V5: 96.83% de líneas y 82.03% de ramas; sin gate hasta V17.
 - Cobertura informativa V6: 97.36% de líneas y 83.15% de ramas; sin gate hasta V17.
 - Cobertura informativa V7: 97.69% de líneas y 79.75% de ramas; sin gate hasta V17.
 - Bloqueos conocidos: Git exige `safe.directory` por comando debido a la diferencia de propietario entre el workspace y la cuenta de ejecución.
-- Próximo paso: esperar aprobación explícita para preparar V10. No iniciar V10 automáticamente.
+- Próximo paso: esperar una nueva solicitud y aprobación explícita antes de preparar V11. No iniciar la versión posterior automáticamente.
 
 ## Decisiones vigentes
 
@@ -54,6 +56,7 @@
 15. V7 incorpora el saldo mínimo bajo propiedad de Inventory; Purchase lo incrementa dentro de la transacción de confirmación. ADR 0005 registra esta decisión.
 16. V8 descuenta saldo mediante una actualización condicional de Inventory, con líneas ordenadas por producto y confirmación transaccional. ADR 0006 registra esta decisión.
 17. V9 registra un movimiento por variación de stock desde la aplicación, conserva saldos previos como aperturas y serializa reintentos de ajustes por UUID; ADR 0007 registra esta decisión.
+18. V10 aplica RBAC interno en la frontera HTTP, access JWT de 15 minutos y refresh opaco de siete días guardado como hash. Cambios de cuenta revocan renovaciones y aumentan una versión que invalida access tokens anteriores. Bloqueos transaccionales coordinan las carreras de sesión y administración; ADR 0008 fue aceptada con el cierre de V10.
 
 Los motivos están registrados en `docs/architecture/decisions/`.
 
@@ -95,6 +98,8 @@ En V8 ambos comandos terminaron en `BUILD SUCCESS` con 90 pruebas contra Postgre
 
 En V9, `compile`, la prueba de migración V5→V6, `test` y `verify` terminaron en `BUILD SUCCESS`. La verificación final ejecutó 96 pruebas contra PostgreSQL 17.11. `git diff --check` no detectó errores de espacios. Se ejecutaron las pruebas de integración fuera del sandbox por el acceso al named pipe de Docker.
 
+En V10, compilación, compilación de pruebas y pruebas seleccionadas pasaron después de correcciones aprobadas explícitamente. `verify` terminó en `BUILD SUCCESS` el 2026-10-17: 108 pruebas, 0 fallos, 0 errores y 0 omitidas, contra PostgreSQL 17.11; generó JAR y JaCoCo. La revisión documenta los fallos previos y sus correcciones. El bootstrap y la clave externa tienen pruebas automatizadas; no se efectuó un arranque manual local/prod con credenciales externas. Para arrancar fuera de test, consultar `docs/security/identity-v10.md` y las variables de `backend/.env.example`.
+
 Las pruebas de integración requieren Docker Desktop operativo y usan `postgres:17-alpine` mediante Testcontainers. En el entorno del agente deben ejecutarse fuera del sandbox para acceder al named pipe de Docker.
 
 Para inspeccionar Git en este entorno:
@@ -125,6 +130,10 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Esquema Sale V8: `docs/database/sales-v8.md`.
 - API Inventory V9: `docs/api/inventory-v9.md`.
 - Esquema Inventory V9: `docs/database/inventory-v9.md`.
+- API Identity V10: `docs/api/identity-v10.md`.
+- Esquema Identity V10: `docs/database/identity-v10.md`.
+- Seguridad y configuración V10: `docs/security/identity-v10.md`.
+- Decisión de Identity: `docs/architecture/decisions/0008-local-identity-and-sessions-v10.md`.
 - Seguridad: `docs/security/role-matrix.md`.
 - API: `docs/api/conventions.md`.
 - Pruebas: `docs/testing/strategy.md`.
@@ -139,6 +148,7 @@ No se debe añadir la excepción de forma global sin autorización del propietar
 - Evidencia de revisión V7: `docs/operations/v7-review.md`.
 - Evidencia de revisión V8: `docs/operations/v8-review.md`.
 - Evidencia de revisión V9: `docs/operations/v9-review.md`.
+- Evidencia de cierre V10: `docs/operations/v10-review.md`.
 - Riesgos: `docs/risks.md`.
 
 ## Regla de actualización

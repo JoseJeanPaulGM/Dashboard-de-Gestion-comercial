@@ -42,6 +42,8 @@ No contendrá stack traces, SQL, nombres internos de clases, tokens ni secretos.
 
 ## Datos
 
+Desde V10, los endpoints comerciales requieren JWT y permisos internos. El contrato de [Identity](identity-v10.md) define login, renovación, logout, administración de usuarios y códigos de seguridad. La [matriz de roles](../security/role-matrix.md) concreta los permisos por recurso; los errores 401/403 también usan Problem Details y correlation ID. OpenAPI incorpora el esquema Bearer.
+
 - JSON UTF-8 y nombres `camelCase`.
 - Fechas/horas ISO 8601.
 - Importes transmitidos como números decimales y moneda ISO 4217 cuando el contexto la requiera.

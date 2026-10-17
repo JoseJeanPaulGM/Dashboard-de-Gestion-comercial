@@ -1,6 +1,6 @@
 # Backend — Gestión Comercial API
 
-Backend de Gestión Comercial con Customer, Catalog, Supplier, Purchase, Sale e Inventory. La API REST usa PostgreSQL y Flyway. La seguridad permanece reservada para V10.
+Backend de Gestión Comercial con Customer, Catalog, Supplier, Purchase, Sale, Inventory e Identity. La API REST usa PostgreSQL y Flyway. V10 añade autenticación local, RBAC y JWT; fue aprobada para cierre el 2026-10-17 con la versión `v10`.
 
 ## Tecnologías activas
 
@@ -9,6 +9,7 @@ Backend de Gestión Comercial con Customer, Catalog, Supplier, Purchase, Sale e 
 - Maven Wrapper 3.8.5.
 - Spring Web, Validation, Actuator y springdoc-openapi 2.9.1.
 - Spring Data JPA, Hibernate y driver PostgreSQL.
+- Spring Security, JWT HS256 con Nimbus y BCrypt; persistencia de Identity mediante JDBC.
 - Flyway para migraciones y Hibernate en modo `validate`.
 - PostgreSQL 17 y Testcontainers para pruebas de persistencia.
 - JaCoCo 0.8.13 como medición informativa de cobertura.
@@ -30,16 +31,15 @@ Desde este directorio:
 .\mvnw.cmd verify
 ```
 
-El perfil `local` se activa por defecto. Antes de ejecutar la aplicación, definir el datasource mediante variables de entorno:
+El perfil `local` se activa por defecto. Antes de ejecutar la aplicación, definir `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` y `JWT_SECRET` mediante variables de entorno. La clave JWT contiene al menos 32 bytes aleatorios codificados en Base64. Para una base sin usuarios, proporcionar también `BOOTSTRAP_ADMIN_USERNAME` y `BOOTSTRAP_ADMIN_PASSWORD`; el arranque crea el primer administrador y exige una contraseña de al menos 12 caracteres y hasta 72 bytes UTF-8.
 
 ```powershell
-$env:DB_URL = "jdbc:postgresql://localhost:5432/gestion_comercial"
-$env:DB_USERNAME = "gestion_comercial"
-$env:DB_PASSWORD = "local-only-password"
 .\mvnw.cmd spring-boot:run
 ```
 
-Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boot no carga ese archivo automáticamente. `DB_URL`, `DB_USERNAME` y `DB_PASSWORD` son obligatorios en producción. Flyway aplica las migraciones y Hibernate valida el esquema en todos los perfiles.
+Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boot no carga ese archivo automáticamente. Los secretos reales no se guardan en Git. Retirar las variables de bootstrap después del primer arranque: con usuarios existentes no se crea ni modifica ninguna cuenta. Flyway aplica las migraciones y Hibernate valida el esquema JPA en todos los perfiles. El perfil test genera una clave efímera, deshabilita el bootstrap y usa Testcontainers.
+
+La verificación del 2026-10-17 ejecutó 108 pruebas con 0 fallos, 0 errores y 0 omitidas contra PostgreSQL 17.11. `verify` generó el JAR y el informe informativo JaCoCo (97.13% de líneas, 77.29% de ramas). La evidencia se conserva en [revisión V10](../docs/operations/v10-review.md).
 
 ## Endpoints disponibles
 
@@ -50,6 +50,9 @@ Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boo
 | `GET /actuator/health` | health check básico |
 | `GET /v3/api-docs` | documento OpenAPI JSON |
 | `GET /swagger-ui/index.html` | interfaz Swagger local |
+| `POST /api/v1/auth/login`, `/refresh`, `/logout` | login, rotación y revocación de renovación |
+| `GET /api/v1/auth/me` | usuario autenticado |
+| `/api/v1/users` y acciones por ID | administración de usuarios, roles, estado y contraseña |
 | `POST /api/v1/customers` | crear cliente |
 | `GET /api/v1/customers/{id}` | consultar cliente |
 | `GET /api/v1/customers` | listar, filtrar y buscar clientes con paginación |
@@ -79,6 +82,8 @@ Los nombres y valores ficticios están disponibles en `.env.example`; Spring Boo
 | `POST /api/v1/inventory/adjustments` | aplicar ajuste justificado e idempotente |
 
 La especificación base está en [backend-base.md](../docs/api/backend-base.md).
+
+Los endpoints comerciales requieren Bearer JWT y los permisos de la [matriz de roles](../docs/security/role-matrix.md). Health y login/refresh/logout son públicos; System requiere autenticación. Swagger/OpenAPI permanecen habilitados solo en local/test. Los contratos y el primer arranque están en [Identity API](../docs/api/identity-v10.md) y [Seguridad V10](../docs/security/identity-v10.md).
 
 La persistencia de V3 está documentada en [persistence-v3.md](../docs/database/persistence-v3.md).
 

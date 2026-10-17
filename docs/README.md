@@ -17,6 +17,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Esquema Purchase V7](database/purchases-v7.md)
 - [Esquema Sale V8](database/sales-v8.md)
 - [Esquema Inventory V9](database/inventory-v9.md)
+- [Esquema Identity V10](database/identity-v10.md)
 - [Convenciones de API](api/conventions.md)
 - [Backend base V2](api/backend-base.md)
 - [API Customer V4](api/customers-v4.md)
@@ -25,7 +26,10 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [API Purchase V7](api/purchases-v7.md)
 - [API Sale V8](api/sales-v8.md)
 - [API Inventory V9](api/inventory-v9.md)
+- [API Identity V10](api/identity-v10.md)
 - [Matriz de roles](security/role-matrix.md)
+- [Seguridad y sesiones V10](security/identity-v10.md)
+- [ADR 0008: Identity local y sesiones](architecture/decisions/0008-local-identity-and-sessions-v10.md)
 - [Estrategia de pruebas](testing/strategy.md)
 - [Flujo Git](devops/git-workflow.md)
 - [Ciclo de fases](operations/phase-workflow.md)
@@ -38,6 +42,7 @@ La documentación es parte del producto y evoluciona en la misma fase que el có
 - [Revisión de V7](operations/v7-review.md)
 - [Revisión de V8](operations/v8-review.md)
 - [Revisión de V9](operations/v9-review.md)
+- [Revisión y cierre de V10](operations/v10-review.md)
 
 ## Directorios por disciplina
 

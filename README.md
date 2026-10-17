@@ -4,18 +4,19 @@ Proyecto de portafolio Full Stack que evolucionará, en 18 fases controladas, de
 
 ## Estado actual
 
-- Última fase cerrada: **V9 — Inventario** (2026-10-14), versión `v9`.
+- Última fase cerrada: **V10 — Identity, RBAC y JWT** (2026-10-17), versión `v10`.
 - Fase activa: ninguna.
-- Código funcional: backend Spring Boot con módulos Customer, Catalog, Supplier, Purchase, Sale e Inventory; API paginada, Flyway y PostgreSQL. Las compras y ventas cambian el stock de forma atómica y generan movimientos trazables. Inventory ofrece ajustes idempotentes, mínimos y alertas.
-- Verificación de V9: 96 pruebas automatizadas en verde contra PostgreSQL 17.11; `verify` completado.
+- Código funcional: backend Spring Boot con Customer, Catalog, Supplier, Purchase, Sale, Inventory e Identity; API paginada, Flyway y PostgreSQL. Las compras y ventas cambian stock y generan movimientos atómicos; Inventory ofrece ajustes idempotentes, mínimos y alertas. Identity incorpora login local, permisos y sesiones revocables.
+- Verificación de V10: 108 pruebas automatizadas en verde contra PostgreSQL 17.11; `verify` completado el 2026-10-17.
 - Base de datos oficial: PostgreSQL.
 - Moneda y zona horaria: PEN y `America/Lima`.
-- Siguiente paso: V10 permanece pendiente y requiere aprobación explícita antes de iniciar.
+- Siguiente paso: esperar una nueva aprobación antes de preparar V11. No se inicia la siguiente versión automáticamente.
 
 La fuente breve de continuidad es [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). El índice documental completo está en [docs/README.md](docs/README.md).
 El contrato de compras está en [docs/api/purchases-v7.md](docs/api/purchases-v7.md) y su esquema en [docs/database/purchases-v7.md](docs/database/purchases-v7.md).
 El contrato de ventas está en [docs/api/sales-v8.md](docs/api/sales-v8.md), su esquema en [docs/database/sales-v8.md](docs/database/sales-v8.md) y la evidencia de cierre en [docs/operations/v8-review.md](docs/operations/v8-review.md).
 El contrato de inventario está en [docs/api/inventory-v9.md](docs/api/inventory-v9.md), su esquema en [docs/database/inventory-v9.md](docs/database/inventory-v9.md) y la evidencia de cierre en [docs/operations/v9-review.md](docs/operations/v9-review.md).
+El contrato de seguridad está en [docs/api/identity-v10.md](docs/api/identity-v10.md), su configuración en [docs/security/identity-v10.md](docs/security/identity-v10.md) y la evidencia de cierre en [docs/operations/v10-review.md](docs/operations/v10-review.md).
 
 ## Alcance del producto
 

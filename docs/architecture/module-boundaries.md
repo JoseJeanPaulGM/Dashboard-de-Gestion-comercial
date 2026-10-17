@@ -32,6 +32,7 @@ Cada módulo será propietario de su modelo, casos de uso, contratos y persisten
 7. Desde V7, Inventory es dueño del saldo por producto. Purchase incrementa existencias exclusivamente mediante su servicio de aplicación y en la misma transacción de confirmación.
 8. Desde V8, Sale descuenta existencias exclusivamente mediante el servicio de Inventory en la transacción de confirmación. Sale no accede a la persistencia del saldo.
 9. V9 añade a Inventory movimientos, ajustes, mínimos y alertas de lectura. Purchase y Sale entregan a Inventory la identidad de cada línea confirmada para registrar un movimiento único; el saldo y el movimiento comparten la transacción.
+10. V10 mantiene usuarios, roles, permisos y sesiones dentro de Identity. Su adaptador JDBC es dueño de las tablas; Spring Security consulta sus contratos para autorizar en la frontera HTTP sin añadir acceso a repositorios de Identity desde los módulos comerciales. Los permisos no proceden de tokens externos.
 
 ## Estructura futura orientativa
 

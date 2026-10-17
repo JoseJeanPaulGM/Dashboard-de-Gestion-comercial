@@ -70,11 +70,19 @@ V8 añade pruebas de dominio, API y persistencia para Sale. Cubren cálculo con 
 
 La verificación del 2026-10-13 ejecutó 90 pruebas contra PostgreSQL 17.11: 0 fallos, 0 errores y 0 omitidas. `test` y `verify` terminaron en `BUILD SUCCESS`. JaCoCo midió 97.49% de líneas y 77.63% de ramas; sigue siendo informativo y sin gate antes de V17. V8 fue aprobada para cierre el 2026-10-14.
 
-## Evidencia de V9 en revisión
+## Evidencia de V9
 
 V9 añade pruebas de API e integración para ajustes idempotentes, reintentos concurrentes con la misma clave, stock insuficiente, mínimos, alertas y paginación de movimientos. Las pruebas de Purchase y Sale verifican ahora el movimiento por línea, ausencia de duplicados y rollback conjunto de saldo y ledger. La prueba de persistencia cubre tanto las seis migraciones desde una base vacía como la actualización desde V5 con saldo existente y movimiento de apertura, y rechaza signos comerciales incorrectos o referencias de origen nulas por SQL directo.
 
-`verify` ejecutó 96 pruebas contra PostgreSQL 17.11 el 2026-10-14: 0 fallos, 0 errores y 0 omitidas. JaCoCo midió 97.60% de líneas y 76.19% de ramas; continúa siendo informativo y sin gate hasta V17. El cierre de V9 sigue pendiente de revisión y aprobación.
+`verify` ejecutó 96 pruebas contra PostgreSQL 17.11 el 2026-10-14: 0 fallos, 0 errores y 0 omitidas. JaCoCo midió 97.60% de líneas y 76.19% de ramas; continúa siendo informativo y sin gate hasta V17. V9 fue aprobada para cierre el 2026-10-14.
+
+## Evidencia de V10
+
+V10 añade diez pruebas de API/integración de Identity y dos de configuración/bootstrap. Cubren login local, permisos reales de los cinco roles, 401/403, JWT incompletos/expirados o de tipos incorrectos, contraseñas y roles inválidos, paginación, hashes de refresh, rotación de un solo uso, logout, desactivación, cambio de privilegios/contraseña y protección del último administrador. Los casos concurrentes comprueban doble renovación, desactivación simultánea de administradores y renovación frente a desactivación.
+
+La regresión comercial conserva sus escenarios con usuarios simulados y permisos explícitos para sus fixtures. Las pruebas de autorización de Identity usan tokens reales; sus fallos no imprimen automáticamente cuerpos ni cabeceras sensibles. El perfil test genera su clave de firma en memoria, deshabilita el bootstrap y mantiene PostgreSQL Testcontainers.
+
+La verificación del 2026-10-17 terminó en `BUILD SUCCESS`: **108 pruebas**, 0 fallos, 0 errores y 0 omitidas, contra PostgreSQL 17.11. Se aplicaron siete migraciones desde una base vacía y se mantuvo la actualización con saldo previo desde V5. JaCoCo midió 97.13% de líneas y 77.29% de ramas, con carácter informativo y sin gate hasta V17. La evidencia y las correcciones aprobadas están en [v10-review.md](../operations/v10-review.md). V10 fue aprobada para cierre el 2026-10-17.
 
 ## Datos y aislamiento
 

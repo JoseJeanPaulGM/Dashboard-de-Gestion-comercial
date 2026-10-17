@@ -2,6 +2,8 @@
 
 La API usa `/api/v1/inventory`, JSON, `PageResponse<T>` y Problem Details. V9 aún no incorpora autenticación ni permisos; ese control corresponde a V10.
 
+Desde V10, estas rutas requieren JWT: `INVENTORY_READ` para consultar y `INVENTORY_ADJUST` para ajustar o configurar mínimos. Véase la [matriz de roles](../security/role-matrix.md).
+
 ## Saldo, mínimo y alertas
 
 | Método | Ruta | Resultado |
